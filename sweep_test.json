@@ -1,0 +1,12 @@
+{
+  "models": [
+    "qwen/qwen3.6-plus:free",
+    "arcee-ai/trinity-large-preview:free"
+  ],
+  "temperatures": [0.7],
+  "environments": ["casino_slot_machines"],
+  "horizons": [20],
+  "repetitions": 5,
+  "seed": 42,
+  "results_dir": "results"
+}

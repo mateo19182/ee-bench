@@ -7,9 +7,11 @@ import json
 import os
 import sys
 
+from dotenv import load_dotenv
+
 from .config import ExperimentConfig, SweepConfig
 from .environments import ALL_ENVIRONMENTS
-from .runner import ENV_MAP, run_single, run_sweep, save_results
+from .runner import ENV_MAP, run_single, run_sweep, save_results, set_verbosity
 
 
 def _env_list() -> str:
@@ -21,15 +23,28 @@ def _env_list() -> str:
 
 
 def main():
+    load_dotenv()
+
     parser = argparse.ArgumentParser(
         description="ee-bench: Explore/Exploit Benchmark for LLMs",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=f"Available environments:\n{_env_list()}",
     )
+    # shared verbosity args — added to both parent and subparsers
+    verbose_args = ["-v", "--verbose"]
+    verbose_kwargs = dict(action="count", default=1,
+        help="Increase verbosity: -v (progress, default), -vv (actions+rewards), -vvv (full prompts+responses)")
+    quiet_args = ["-q", "--quiet"]
+    quiet_kwargs = dict(action="store_true", help="Suppress all output except errors")
+
+    parser.add_argument(*verbose_args, **verbose_kwargs)
+    parser.add_argument(*quiet_args, **quiet_kwargs)
     sub = parser.add_subparsers(dest="command")
 
     # --- run: single experiment ---
     run_p = sub.add_parser("run", help="Run a single experiment")
+    run_p.add_argument(*verbose_args, **verbose_kwargs)
+    run_p.add_argument(*quiet_args, **quiet_kwargs)
     run_p.add_argument("--model", required=True, help="OpenRouter model id")
     run_p.add_argument("--env", required=True, help="Environment name")
     run_p.add_argument("--temperature", type=float, default=0.7)
@@ -42,6 +57,8 @@ def main():
 
     # --- sweep: full parameter sweep ---
     sweep_p = sub.add_parser("sweep", help="Run a parameter sweep from a config file")
+    sweep_p.add_argument(*verbose_args, **verbose_kwargs)
+    sweep_p.add_argument(*quiet_args, **quiet_kwargs)
     sweep_p.add_argument("config_file", help="JSON config file for the sweep")
     sweep_p.add_argument("--api-key", default=None)
 
@@ -49,6 +66,17 @@ def main():
     sub.add_parser("list", help="List available environments")
 
     args = parser.parse_args()
+
+    # set verbosity — pick the highest -v count from parent or subcommand
+    quiet = getattr(args, "quiet", False)
+    verbose = max(
+        getattr(parser.parse_known_args()[0], "verbose", 1),
+        getattr(args, "verbose", 1),
+    )
+    if quiet:
+        set_verbosity(0)
+    else:
+        set_verbosity(verbose)
 
     if args.command == "list":
         print("Available environments:\n")

@@ -54,15 +54,37 @@ export OPENROUTER_API_KEY="sk-or-..."
 uv run ee-bench list
 ```
 
+### Quick test
+
+```bash
+uv run python -m ee_bench.cli run --model qwen/qwen3.6-plus:free --env casino_slot_machines --horizons 20 --repetitions 1
+```
+
 ### Single run
 
 ```bash
-uv run ee-bench run \
+uv run python -m ee_bench.cli run \
   --model anthropic/claude-sonnet-4 \
   --env casino_slot_machines \
   --temperature 0.7 \
   --horizons 20 100 \
   --repetitions 3
+```
+
+### Verbosity levels
+
+```bash
+# Default: progress bars only
+uv run python -m ee_bench.cli run --model ... --env ...
+
+# Show each action + reward per step
+uv run python -m ee_bench.cli -vv run --model ... --env ...
+
+# Full debug: prompts sent to the model + raw LLM responses
+uv run python -m ee_bench.cli -vvv run --model ... --env ...
+
+# Silent: no output except errors
+uv run python -m ee_bench.cli -q run --model ... --env ...
 ```
 
 ### Parameter sweep

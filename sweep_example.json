@@ -1,0 +1,23 @@
+{
+  "models": [
+    "anthropic/claude-sonnet-4",
+    "openai/gpt-4o",
+    "google/gemini-2.0-flash-001",
+    "meta-llama/llama-3.1-70b-instruct"
+  ],
+  "temperatures": [0.0, 0.3, 0.7, 1.0],
+  "environments": [
+    "casino_slot_machines",
+    "restaurant_picker",
+    "clinical_trial",
+    "venture_capitalist",
+    "ocean_fishing",
+    "treasure_hunter",
+    "alchemy_lab",
+    "radio_tuner"
+  ],
+  "horizons": [20, 100, 500],
+  "repetitions": 5,
+  "seed": 42,
+  "results_dir": "results"
+}

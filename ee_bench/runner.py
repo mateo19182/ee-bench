@@ -24,14 +24,15 @@ console = Console()
 
 class EpisodeFailure(Exception):
     """Raised when an episode cannot continue (e.g. model won't produce valid actions)."""
+
     pass
 
 
 # Verbosity levels
-QUIET = 0      # no output except errors
-PROGRESS = 1   # progress bars only (default)
-ACTIONS = 2    # show each action + reward
-DEBUG = 3      # show full prompts + raw LLM responses
+QUIET = 0  # no output except errors
+PROGRESS = 1  # progress bars only (default)
+ACTIONS = 2  # show each action + reward
+DEBUG = 3  # show full prompts + raw LLM responses
 
 ENV_MAP = {env.name: env for env in ALL_ENVIRONMENTS}
 
@@ -75,7 +76,10 @@ def run_episode(
     conversation_log: list[dict[str, Any]] = []
 
     if _verbosity >= DEBUG:
-        _log(DEBUG, Panel(env.get_system_prompt(), title="[bold]System Prompt[/bold]", border_style="blue"))
+        _log(
+            DEBUG,
+            Panel(env.get_system_prompt(), title="[bold]System Prompt[/bold]", border_style="blue"),
+        )
 
     for step in range(horizon):
         messages = _build_messages(env)
@@ -88,8 +92,13 @@ def run_episode(
         }
 
         if _verbosity >= DEBUG:
-            _log(DEBUG, f"\n[dim]── Step {step+1}/{horizon} ──[/dim]")
-            _log(DEBUG, Panel(messages[-1]["content"], title="[bold]Action Prompt[/bold]", border_style="cyan"))
+            _log(DEBUG, f"\n[dim]── Step {step + 1}/{horizon} ──[/dim]")
+            _log(
+                DEBUG,
+                Panel(
+                    messages[-1]["content"], title="[bold]Action Prompt[/bold]", border_style="cyan"
+                ),
+            )
 
         # get LLM response with retries for parse failures
         action = None
@@ -116,7 +125,7 @@ def run_episode(
                 break
 
             if _verbosity >= DEBUG:
-                _log(DEBUG, f"  [yellow]Parse failed (attempt {attempt+1}), retrying...[/yellow]")
+                _log(DEBUG, f"  [yellow]Parse failed (attempt {attempt + 1}), retrying...[/yellow]")
 
             # parse failed — add a nudge and retry
             valid = env.valid_actions()
@@ -125,13 +134,15 @@ def run_episode(
             else:
                 hint = "Please respond with only the requested format. No explanation."
             messages.append({"role": "assistant", "content": raw})
-            messages.append({"role": "user", "content": f"I couldn't understand your response. {hint}"})
+            messages.append(
+                {"role": "user", "content": f"I couldn't understand your response. {hint}"}
+            )
 
         if action is None:
             step_log["outcome"] = "failure"
             conversation_log.append(step_log)
             raise EpisodeFailure(
-                f"Step {step+1}/{horizon}: model failed to produce a valid action after {max_retries} attempts"
+                f"Step {step + 1}/{horizon}: model failed to produce a valid action after {max_retries} attempts"
             )
 
         result = env.step(action)
@@ -142,8 +153,13 @@ def run_episode(
         conversation_log.append(step_log)
 
         if _verbosity >= ACTIONS:
-            reward_color = "green" if result.reward > 0.6 else "yellow" if result.reward > 0.3 else "red"
-            _log(ACTIONS, f"  [{reward_color}]Step {step+1:>3}[/{reward_color}]: {action:<25} → reward={result.reward:.3f}  │ {result.feedback}")
+            reward_color = (
+                "green" if result.reward > 0.6 else "yellow" if result.reward > 0.3 else "red"
+            )
+            _log(
+                ACTIONS,
+                f"  [{reward_color}]Step {step + 1:>3}[/{reward_color}]: {action:<25} → reward={result.reward:.3f}  │ {result.feedback}",
+            )
 
     return env.history, optimal_rewards, conversation_log
 
@@ -165,12 +181,17 @@ def _run_episode_safe(
                 env, provider, model, temperature, horizon
             )
         except EpisodeFailure as e:
-            _log(PROGRESS, f"  [yellow]Episode failed (attempt {attempt+1}/{episode_retries}): {e}[/yellow]")
+            _log(
+                PROGRESS,
+                f"  [yellow]Episode failed (attempt {attempt + 1}/{episode_retries}): {e}[/yellow]",
+            )
             if attempt < episode_retries - 1:
                 time.sleep(5 * (attempt + 1))
             continue
         metrics = compute_all_metrics(
-            history, optimal_rewards, is_stationary=env.is_stationary,
+            history,
+            optimal_rewards,
+            is_stationary=env.is_stationary,
         )
         return {
             "metrics": asdict(metrics),
@@ -193,10 +214,15 @@ def run_single(config: ExperimentConfig) -> dict[str, Any]:
 
     env_cls = ENV_MAP.get(config.environment)
     if env_cls is None:
-        raise ValueError(f"Unknown environment: {config.environment}. Available: {list(ENV_MAP.keys())}")
+        raise ValueError(
+            f"Unknown environment: {config.environment}. Available: {list(ENV_MAP.keys())}"
+        )
 
     _log(PROGRESS, f"[bold]Model:[/bold] {config.model}")
-    _log(PROGRESS, f"[bold]Environment:[/bold] {config.environment} ({'stationary' if env_cls.is_stationary else 'non-stationary'})")
+    _log(
+        PROGRESS,
+        f"[bold]Environment:[/bold] {config.environment} ({'stationary' if env_cls.is_stationary else 'non-stationary'})",
+    )
     _log(PROGRESS, f"[bold]Temperature:[/bold] {config.temperature}")
     _log(PROGRESS, f"[bold]Horizons:[/bold] {config.horizons}")
     _log(PROGRESS, f"[bold]Repetitions:[/bold] {config.repetitions}")
@@ -229,7 +255,10 @@ def run_single(config: ExperimentConfig) -> dict[str, Any]:
     else:
         for horizon in config.horizons:
             for rep in range(config.repetitions):
-                _log(ACTIONS, f"\n[bold]━━━ Horizon {horizon} │ Rep {rep+1}/{config.repetitions} ━━━[/bold]")
+                _log(
+                    ACTIONS,
+                    f"\n[bold]━━━ Horizon {horizon} │ Rep {rep + 1}/{config.repetitions} ━━━[/bold]",
+                )
                 seed = config.seed + rep * 1000 + horizon
                 ep = _run_episode_safe(
                     env_cls, seed, provider, config.model, config.temperature, horizon
@@ -238,20 +267,30 @@ def run_single(config: ExperimentConfig) -> dict[str, Any]:
                     ep.update({"horizon": horizon, "repetition": rep, "seed": seed})
                     results["episodes"].append(ep)
                     m = ep["metrics"]
-                    _log(ACTIONS, f"  [dim]total_reward={m['total_reward']:.3f}  regret={m['total_regret']:.3f}  expl_ratio={m['final_exploration_ratio']:.3f}[/dim]")
+                    _log(
+                        ACTIONS,
+                        f"  [dim]total_reward={m['total_reward']:.3f}  regret={m['total_regret']:.3f}  expl_ratio={m['final_exploration_ratio']:.3f}[/dim]",
+                    )
 
     provider.close()
     return results
 
 
-def _combo_key(model: str, env_name: str, temp: float) -> str:
-    """Unique key for a (model, environment, temperature) combination."""
-    return f"{model}|{env_name}|{temp}"
+def _find_combo(
+    results: list[dict[str, Any]], model: str, env_name: str, temp: float
+) -> dict[str, Any] | None:
+    """Find an existing combo result dict, or None."""
+    for r in results:
+        if r["model"] == model and r["environment"] == env_name and r["temperature"] == temp:
+            return r
+    return None
 
 
-def _completed_combos(results: list[dict[str, Any]]) -> set[str]:
-    """Extract the set of completed combo keys from existing results."""
-    return {_combo_key(r["model"], r["environment"], r["temperature"]) for r in results}
+def _episode_done(combo: dict[str, Any], horizon: int, rep: int) -> bool:
+    """Check if a specific episode already exists in a combo."""
+    return any(
+        ep["horizon"] == horizon and ep["repetition"] == rep for ep in combo["episodes"]
+    )
 
 
 def _flush_results(all_results: list[dict[str, Any]], run_dir: Path):
@@ -287,25 +326,24 @@ def run_sweep(
     run_dir.mkdir(parents=True, exist_ok=True)
 
     all_results = list(existing_results) if existing_results else []
-    done = _completed_combos(all_results)
 
     envs = config.environments or list(ENV_MAP.keys())
     models = config.models
 
     # Count total and already-done episodes for progress
-    episodes_per_combo = len(config.horizons) * config.repetitions
-    total_combos = len(models) * len(envs) * len(config.temperatures)
-    skipped_combos = sum(
-        1 for m in models for e in envs for t in config.temperatures
-        if _combo_key(m, e, t) in done
-    )
-    total_episodes = total_combos * episodes_per_combo
-    skipped_episodes = skipped_combos * episodes_per_combo
+    total_episodes = len(models) * len(envs) * len(config.temperatures) * len(config.horizons) * config.repetitions
+    skipped_episodes = sum(len(r["episodes"]) for r in all_results)
     remaining = total_episodes - skipped_episodes
 
-    if skipped_combos:
-        _log(PROGRESS, f"[bold]Resuming:[/bold] {skipped_combos}/{total_combos} combos already done, {remaining} episodes remaining")
-    _log(PROGRESS, f"[bold]Sweep:[/bold] {len(models)} models × {len(envs)} envs × {len(config.temperatures)} temps × {len(config.horizons)} horizons × {config.repetitions} reps = {total_episodes} episodes")
+    if skipped_episodes:
+        _log(
+            PROGRESS,
+            f"[bold]Resuming:[/bold] {skipped_episodes}/{total_episodes} episodes already done, {remaining} remaining",
+        )
+    _log(
+        PROGRESS,
+        f"[bold]Sweep:[/bold] {len(models)} models × {len(envs)} envs × {len(config.temperatures)} temps × {len(config.horizons)} horizons × {config.repetitions} reps = {total_episodes} episodes",
+    )
 
     use_progress_bar = _verbosity == PROGRESS
 
@@ -321,60 +359,66 @@ def run_sweep(
             for model in models:
                 for env_name in envs:
                     for temp in config.temperatures:
-                        if _combo_key(model, env_name, temp) in done:
-                            continue
-                        run_result = {
-                            "model": model,
-                            "environment": env_name,
-                            "temperature": temp,
-                            "episodes": [],
-                        }
+                        combo = _find_combo(all_results, model, env_name, temp)
+                        if combo is None:
+                            combo = {"model": model, "environment": env_name, "temperature": temp, "episodes": []}
+                            all_results.append(combo)
                         env_cls = ENV_MAP[env_name]
                         for horizon in config.horizons:
                             for rep in range(config.repetitions):
+                                if _episode_done(combo, horizon, rep):
+                                    continue
                                 seed = config.seed + rep * 1000 + horizon
                                 progress.update(
                                     main_task,
-                                    description=f"{model} / {env_name} / t={temp} / h={horizon} / r={rep+1}",
+                                    description=f"{model} / {env_name} / t={temp} / h={horizon} / r={rep + 1}",
                                 )
                                 ep = _run_episode_safe(
                                     env_cls, seed, provider, model, temp, horizon
                                 )
                                 if ep is not None:
                                     ep.update({"horizon": horizon, "repetition": rep, "seed": seed})
-                                    run_result["episodes"].append(ep)
+                                    combo["episodes"].append(ep)
+                                _flush_results(all_results, run_dir)
                                 progress.advance(main_task)
-                        all_results.append(run_result)
-                        _flush_results(all_results, run_dir)
-                        _log(PROGRESS, f"  [dim]checkpoint: {len(all_results)}/{total_combos} combos saved[/dim]")
     else:
         for model in models:
             for env_name in envs:
                 for temp in config.temperatures:
-                    if _combo_key(model, env_name, temp) in done:
-                        _log(ACTIONS, f"\n[dim]Skipping {model} / {env_name} / t={temp} (already done)[/dim]")
-                        continue
-                    run_result = {
-                        "model": model,
-                        "environment": env_name,
-                        "temperature": temp,
-                        "episodes": [],
-                    }
+                    combo = _find_combo(all_results, model, env_name, temp)
+                    if combo is None:
+                        combo = {"model": model, "environment": env_name, "temperature": temp, "episodes": []}
+                        all_results.append(combo)
                     env_cls = ENV_MAP[env_name]
+                    combo_had_work = False
                     for horizon in config.horizons:
                         for rep in range(config.repetitions):
-                            _log(ACTIONS, f"\n[bold]━━━ {model} / {env_name} / t={temp} / h={horizon} / r={rep+1} ━━━[/bold]")
-                            seed = config.seed + rep * 1000 + horizon
-                            ep = _run_episode_safe(
-                                env_cls, seed, provider, model, temp, horizon
+                            if _episode_done(combo, horizon, rep):
+                                _log(
+                                    ACTIONS,
+                                    f"\n[dim]Skipping {model} / {env_name} / t={temp} / h={horizon} / r={rep + 1} (already done)[/dim]",
+                                )
+                                continue
+                            combo_had_work = True
+                            _log(
+                                ACTIONS,
+                                f"\n[bold]━━━ {model} / {env_name} / t={temp} / h={horizon} / r={rep + 1} ━━━[/bold]",
                             )
+                            seed = config.seed + rep * 1000 + horizon
+                            ep = _run_episode_safe(env_cls, seed, provider, model, temp, horizon)
                             if ep is not None:
                                 ep.update({"horizon": horizon, "repetition": rep, "seed": seed})
-                                run_result["episodes"].append(ep)
-                                _log(ACTIONS, f"  [dim]reward={ep['metrics']['total_reward']:.3f}  regret={ep['metrics']['total_regret']:.3f}[/dim]")
-                    all_results.append(run_result)
-                    _flush_results(all_results, run_dir)
-                    _log(ACTIONS, f"  [green]Checkpoint saved: {len(all_results)}/{total_combos} combos[/green]")
+                                combo["episodes"].append(ep)
+                                _log(
+                                    ACTIONS,
+                                    f"  [dim]reward={ep['metrics']['total_reward']:.3f}  regret={ep['metrics']['total_regret']:.3f}[/dim]",
+                                )
+                            _flush_results(all_results, run_dir)
+                    if not combo_had_work:
+                        _log(
+                            ACTIONS,
+                            f"\n[dim]Skipping {model} / {env_name} / t={temp} (fully done)[/dim]",
+                        )
 
     provider.close()
     return all_results, run_dir

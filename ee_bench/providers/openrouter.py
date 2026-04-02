@@ -11,7 +11,6 @@ _RETRYABLE = {429, 500, 502, 503, 504}
 
 
 class OpenRouterProvider:
-
     def __init__(self, api_key: str, base_url: str = "https://openrouter.ai/api/v1"):
         self.api_key = api_key
         self.base_url = base_url.rstrip("/")
@@ -56,20 +55,18 @@ class OpenRouterProvider:
                 content = data["choices"][0]["message"]["content"]
                 if content is None:
                     # Model returned null content — treat as transient, retry
-                    delay = base_delay * (2 ** attempt)
+                    delay = base_delay * (2**attempt)
                     time.sleep(min(delay, 120))
                     continue
                 return content.strip()
 
             except (httpx.TimeoutException, httpx.ConnectError) as e:
                 last_exc = e
-                delay = base_delay * (2 ** attempt)
+                delay = base_delay * (2**attempt)
                 time.sleep(min(delay, 120))
                 continue
 
-        raise RuntimeError(
-            f"Failed after {max_retries + 1} attempts: {last_exc or 'rate limited'}"
-        )
+        raise RuntimeError(f"Failed after {max_retries + 1} attempts: {last_exc or 'rate limited'}")
 
     def close(self):
         self._client.close()
@@ -83,4 +80,4 @@ def _retry_delay(resp: httpx.Response, attempt: int, base_delay: float) -> float
             return float(retry_after)
         except ValueError:
             pass
-    return min(base_delay * (2 ** attempt), 120)
+    return min(base_delay * (2**attempt), 120)

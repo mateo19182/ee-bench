@@ -2,6 +2,8 @@
 
 Explore/Exploit benchmark for LLMs. Measures how well language models navigate the exploration vs. exploitation tradeoff across varied scenarios — from slot machines to treasure hunts.
 
+Kind of pointless by itself as LLMs are really prompt sensitive, but interesting to compare results across models or parameters.
+
 ## Environments
 
 ### Bandits (stationary)

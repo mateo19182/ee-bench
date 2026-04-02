@@ -11,6 +11,7 @@ import numpy as np
 @dataclass
 class EpisodeMetrics:
     """Metrics computed for one episode (one run of an environment)."""
+
     total_reward: float
     total_regret: float
     cumulative_regret_curve: list[float]  # regret at each step
@@ -42,10 +43,16 @@ def compute_all_metrics(
     n = len(history)
     if n == 0:
         return EpisodeMetrics(
-            total_reward=0, total_regret=0,
-            cumulative_regret_curve=[], exploration_ratio_curve=[],
-            adaptation_events=[], unique_actions_tried=0, total_steps=0,
-            mean_reward=0, final_exploration_ratio=0, adaptation_speed=None,
+            total_reward=0,
+            total_regret=0,
+            cumulative_regret_curve=[],
+            exploration_ratio_curve=[],
+            adaptation_events=[],
+            unique_actions_tried=0,
+            total_steps=0,
+            mean_reward=0,
+            final_exploration_ratio=0,
+            adaptation_speed=None,
         )
 
     rewards = [h["reward"] for h in history]
@@ -69,7 +76,7 @@ def compute_all_metrics(
 
         # rolling window
         start = max(0, i - window + 1)
-        window_actions = actions[start:i + 1]
+        window_actions = actions[start : i + 1]
         # compute how many unique actions in window vs. just picking the best
         if i >= 1:
             window_best = best_action
@@ -94,10 +101,12 @@ def compute_all_metrics(
                     if actions[j] != pre_action:
                         steps_to_adapt = j - i
                         break
-                adaptation_events.append({
-                    "shift_at": i,
-                    "steps_to_adapt": steps_to_adapt,
-                })
+                adaptation_events.append(
+                    {
+                        "shift_at": i,
+                        "steps_to_adapt": steps_to_adapt,
+                    }
+                )
 
         speeds = [e["steps_to_adapt"] for e in adaptation_events if e["steps_to_adapt"] is not None]
         adaptation_speed = float(np.mean(speeds)) if speeds else None
@@ -111,6 +120,8 @@ def compute_all_metrics(
         unique_actions_tried=len(set(actions)),
         total_steps=n,
         mean_reward=float(np.mean(rewards)),
-        final_exploration_ratio=float(np.mean(exploration_curve[-window:])) if exploration_curve else 0,
+        final_exploration_ratio=float(np.mean(exploration_curve[-window:]))
+        if exploration_curve
+        else 0,
         adaptation_speed=adaptation_speed,
     )

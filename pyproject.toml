@@ -13,6 +13,9 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+dev = [
+    "ruff>=0.6.0",
+]
 analysis = [
     "matplotlib>=3.8",
     "pandas>=2.1",
@@ -26,3 +29,13 @@ build-backend = "hatchling.build"
 [project.scripts]
 ee-bench = "ee_bench.cli:main"
 ee-bench-analyze = "ee_bench.analysis:main"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"

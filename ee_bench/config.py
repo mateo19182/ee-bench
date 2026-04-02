@@ -6,6 +6,7 @@ from dataclasses import dataclass, field
 @dataclass
 class ExperimentConfig:
     """Configuration for a single experiment run."""
+
     # Model
     model: str  # OpenRouter model id, e.g. "anthropic/claude-sonnet-4"
     temperature: float = 0.7
@@ -31,6 +32,7 @@ class ExperimentConfig:
 @dataclass
 class SweepConfig:
     """Configuration for a parameter sweep."""
+
     models: list[str] = field(default_factory=list)
     temperatures: list[float] = field(default_factory=lambda: [0.0, 0.3, 0.7, 1.0])
     environments: list[str] = field(default_factory=list)

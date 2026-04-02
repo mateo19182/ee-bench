@@ -43,28 +43,36 @@ def _matches(condition: str, value: float, *, found: bool = False) -> bool:
         return found
 
     # range: "8-10", "0.3-0.7"
-    m = re.match(r'^\(?([\d.]+)\s*-\s*([\d.]+)\)?$', condition)
+    m = re.match(r"^\(?([\d.]+)\s*-\s*([\d.]+)\)?$", condition)
     if m:
         lo, hi = float(m.group(1)), float(m.group(2))
         return lo <= value <= hi
 
     # comparison: ">0.7", "<=0", ">=80"
-    m = re.match(r'^([<>]=?)\s*([\d.]+)$', condition)
+    m = re.match(r"^([<>]=?)\s*([\d.]+)$", condition)
     if m:
         op, num = m.group(1), float(m.group(2))
-        if op == '>': return value > num
-        if op == '>=': return value >= num
-        if op == '<': return value < num
-        if op == '<=': return value <= num
+        if op == ">":
+            return value > num
+        if op == ">=":
+            return value >= num
+        if op == "<":
+            return value < num
+        if op == "<=":
+            return value <= num
 
     # parenthesized comparison: (>0.7)
-    m = re.match(r'^\(([<>]=?)\s*([\d.]+)\)$', condition)
+    m = re.match(r"^\(([<>]=?)\s*([\d.]+)\)$", condition)
     if m:
         op, num = m.group(1), float(m.group(2))
-        if op == '>': return value > num
-        if op == '>=': return value >= num
-        if op == '<': return value < num
-        if op == '<=': return value <= num
+        if op == ">":
+            return value > num
+        if op == ">=":
+            return value >= num
+        if op == "<":
+            return value < num
+        if op == "<=":
+            return value <= num
 
     return False
 
@@ -78,34 +86,34 @@ def load_prompt(env_name: str) -> PromptTemplate:
     text = path.read_text()
 
     # strip YAML frontmatter
-    text = re.sub(r'^---\n.*?\n---\n', '', text, flags=re.DOTALL)
+    text = re.sub(r"^---\n.*?\n---\n", "", text, flags=re.DOTALL)
 
     # split into sections by "# heading"
     sections: dict[str, str] = {}
     current_section = None
     current_lines: list[str] = []
 
-    for line in text.split('\n'):
-        m = re.match(r'^#\s+(\w+)\s*$', line)
+    for line in text.split("\n"):
+        m = re.match(r"^#\s+(\w+)\s*$", line)
         if m:
             if current_section:
-                sections[current_section] = '\n'.join(current_lines).strip()
+                sections[current_section] = "\n".join(current_lines).strip()
             current_section = m.group(1).lower()
             current_lines = []
         else:
             current_lines.append(line)
 
     if current_section:
-        sections[current_section] = '\n'.join(current_lines).strip()
+        sections[current_section] = "\n".join(current_lines).strip()
 
     # parse flavor section
-    flavors = _parse_flavors(sections.get('flavor', ''))
+    flavors = _parse_flavors(sections.get("flavor", ""))
 
     return PromptTemplate(
         env=env_name,
-        system=sections.get('system', ''),
-        action=sections.get('action', ''),
-        feedback=sections.get('feedback', ''),
+        system=sections.get("system", ""),
+        action=sections.get("action", ""),
+        feedback=sections.get("feedback", ""),
         flavors=flavors,
     )
 
@@ -121,9 +129,9 @@ def _parse_flavors(text: str) -> list[FlavorEntry]:
     flavors = []
     current: FlavorEntry | None = None
 
-    for line in text.split('\n'):
+    for line in text.split("\n"):
         # top-level entry: "- high: (>0.7)"
-        m = re.match(r'^-\s+(\w+):\s*(.+)$', line)
+        m = re.match(r"^-\s+(\w+):\s*(.+)$", line)
         if m:
             if current:
                 flavors.append(current)

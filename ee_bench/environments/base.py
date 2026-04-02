@@ -1,15 +1,26 @@
 from __future__ import annotations
 
 import abc
+import re
 from dataclasses import dataclass, field
 from typing import Any
 
 import numpy as np
 
 
+# Regex patterns to match thinking/reasoning blocks in various formats
+THINK_PATTERNS = [
+    re.compile(r"```think\n.*?```", re.DOTALL | re.IGNORECASE),
+    re.compile(r"<thinking>.*?</thinking>", re.DOTALL | re.IGNORECASE),
+    re.compile(r"<reasoning>.*?</reasoning>", re.DOTALL | re.IGNORECASE),
+    re.compile(r"\[thinking\].*?\[/thinking\]", re.DOTALL | re.IGNORECASE),
+]
+
+
 @dataclass
 class EnvironmentResult:
     """What the environment returns after an action."""
+
     reward: float
     feedback: str  # natural-language feedback shown to the LLM
     info: dict[str, Any] = field(default_factory=dict)
@@ -59,27 +70,39 @@ class Environment(abc.ABC):
 
     def parse_action(self, raw: str) -> str | None:
         """Try to extract a valid action from LLM output.
-        Returns None if no valid action found."""
-        raw_lower = raw.strip().lower()
+        Returns None if no valid action found.
+
+        Strips thinking/reasoning blocks and prefers the last mention
+        of a valid action (since that's likely the final choice after analysis).
+        """
+        # Strip thinking blocks
+        cleaned = raw
+        for pattern in THINK_PATTERNS:
+            cleaned = pattern.sub("", cleaned)
+
+        cleaned_lower = cleaned.strip().lower()
         actions = self.valid_actions()
 
         # exact match
         for a in actions:
-            if a.lower() == raw_lower:
+            if a.lower() == cleaned_lower:
                 return a
 
-        # check if any action label appears in the response
-        found = []
+        # Find all occurrences of action names with their positions
+        # Return the LAST one (likely the final choice after analysis)
+        found_positions = []
         for a in actions:
-            if a.lower() in raw_lower:
-                found.append(a)
+            pattern = re.compile(re.escape(a.lower()))
+            for match in pattern.finditer(cleaned_lower):
+                found_positions.append((match.start(), a))
 
-        if len(found) == 1:
-            return found[0]
+        if found_positions:
+            # Sort by position and return the last one
+            found_positions.sort(key=lambda x: x[0])
+            return found_positions[-1][1]
 
         # try to find a number if actions are numbered
-        import re
-        numbers = re.findall(r'\b(\d+)\b', raw)
+        numbers = re.findall(r"\b(\d+)\b", cleaned)
         for num_str in numbers:
             idx = int(num_str) - 1  # 1-indexed
             if 0 <= idx < len(actions):
@@ -96,3 +119,12 @@ class Environment(abc.ABC):
         for i, h in enumerate(entries, 1):
             lines.append(f"Round {h['round']}: {h['summary']}")
         return "\n".join(lines)
+
+    def _append_format_instruction(self, prompt: str) -> str:
+        """Append standard format instruction to a prompt."""
+        actions = self.valid_actions()
+        if len(actions) <= 20:
+            instruction = f"\n\nWhen responding, output ONLY the exact name from this list: {', '.join(actions)}"
+        else:
+            instruction = "\n\nWhen responding, output ONLY the exact name of your choice."
+        return prompt + instruction

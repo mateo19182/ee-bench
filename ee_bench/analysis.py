@@ -13,7 +13,9 @@ import numpy as np
 def summary_table(results: list[dict], out=None):
     """Print a summary table of all runs."""
     p = lambda *a, **k: print(*a, **k, file=out)
-    p(f"\n{'Model':<40} {'Env':<25} {'Temp':>5} {'Horizon':>8} {'AvgReward':>10} {'AvgRegret':>10} {'ExplRatio':>10} {'UniqueAct':>10}")
+    p(
+        f"\n{'Model':<40} {'Env':<25} {'Temp':>5} {'Horizon':>8} {'AvgReward':>10} {'AvgRegret':>10} {'ExplRatio':>10} {'UniqueAct':>10}"
+    )
     p("=" * 130)
 
     for run in results:
@@ -30,7 +32,9 @@ def summary_table(results: list[dict], out=None):
             avg_regret = np.mean([m["total_regret"] for m in metrics_list])
             avg_expl = np.mean([m["final_exploration_ratio"] for m in metrics_list])
             avg_unique = np.mean([m["unique_actions_tried"] for m in metrics_list])
-            p(f"{model:<40} {env:<25} {temp:>5.1f} {horizon:>8} {avg_reward:>10.4f} {avg_regret:>10.2f} {avg_expl:>10.3f} {avg_unique:>10.1f}")
+            p(
+                f"{model:<40} {env:<25} {temp:>5.1f} {horizon:>8} {avg_reward:>10.4f} {avg_regret:>10.2f} {avg_expl:>10.3f} {avg_unique:>10.1f}"
+            )
 
 
 def compare_models(results: list[dict], out=None):
@@ -106,7 +110,7 @@ def regret_curves(results: list[dict], out=None):
             avg_curve = np.mean([c[:min_len] for c in curves], axis=0)
 
             indices = np.linspace(0, min_len - 1, min(10, min_len), dtype=int)
-            points = " -> ".join(f"r{i+1}:{avg_curve[i]:.2f}" for i in indices)
+            points = " -> ".join(f"r{i + 1}:{avg_curve[i]:.2f}" for i in indices)
             p(f"{model} | {env} | t={temp} | h={horizon}: {points}")
 
 
@@ -168,12 +172,17 @@ def main():
     parser.add_argument("--regret-curves", action="store_true")
     parser.add_argument("--adaptation", action="store_true")
     parser.add_argument("--all", action="store_true", help="Run all analyses")
-    parser.add_argument("--output-dir", default=None,
-                        help="Directory to save analysis.txt and graphs (defaults to same dir as results)")
+    parser.add_argument(
+        "--output-dir",
+        default=None,
+        help="Directory to save analysis.txt and graphs (defaults to same dir as results)",
+    )
     args = parser.parse_args()
 
     results = load_results(args.results_file)
-    do_all = args.all or not any([args.compare_models, args.compare_temps, args.regret_curves, args.adaptation])
+    do_all = args.all or not any(
+        [args.compare_models, args.compare_temps, args.regret_curves, args.adaptation]
+    )
 
     out_dir = Path(args.output_dir) if args.output_dir else Path(args.results_file).parent
 
@@ -181,6 +190,7 @@ def main():
         save_analysis(results, out_dir)
         try:
             from .graphs import generate_graphs
+
             graphs = generate_graphs(results, out_dir)
             print(f"\nGraphs saved: {len(graphs)} files in {out_dir / 'graphs'}")
         except ImportError:

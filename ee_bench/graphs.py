@@ -11,6 +11,7 @@ import numpy as np
 def generate_graphs(results: list[dict], run_dir: Path) -> list[Path]:
     """Generate all graphs and save to run_dir. Returns list of created files."""
     import matplotlib
+
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
 

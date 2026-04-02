@@ -1,16 +1,14 @@
+"""Environment implementations for explore/exploit benchmarks."""
+
 from .base import Environment, EnvironmentResult
-from .bandit import (
+from .bandits import (
     CasinoSlotMachines,
-    RestaurantPicker,
     ClinicalTrial,
-    VentureCapitalist,
     OceanFishing,
+    RestaurantPicker,
+    VentureCapitalist,
 )
-from .search import (
-    TreasureHunter,
-    AlchemyLab,
-    RadioTuner,
-)
+from .search import AlchemyLab, RadioTuner, TreasureHunter
 
 ALL_ENVIRONMENTS: list[type[Environment]] = [
     # Bandits - stationary
@@ -24,4 +22,18 @@ ALL_ENVIRONMENTS: list[type[Environment]] = [
     TreasureHunter,
     AlchemyLab,
     RadioTuner,
+]
+
+__all__ = [
+    "Environment",
+    "EnvironmentResult",
+    "ALL_ENVIRONMENTS",
+    "CasinoSlotMachines",
+    "RestaurantPicker",
+    "OceanFishing",
+    "ClinicalTrial",
+    "VentureCapitalist",
+    "TreasureHunter",
+    "AlchemyLab",
+    "RadioTuner",
 ]

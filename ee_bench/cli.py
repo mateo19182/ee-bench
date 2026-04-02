@@ -32,8 +32,11 @@ def main():
     )
     # shared verbosity args — added to both parent and subparsers
     verbose_args = ["-v", "--verbose"]
-    verbose_kwargs = dict(action="count", default=1,
-        help="Increase verbosity: -v (progress, default), -vv (actions+rewards), -vvv (full prompts+responses)")
+    verbose_kwargs = dict(
+        action="count",
+        default=1,
+        help="Increase verbosity: -v (progress, default), -vv (actions+rewards), -vvv (full prompts+responses)",
+    )
     quiet_args = ["-q", "--quiet"]
     quiet_kwargs = dict(action="store_true", help="Suppress all output except errors")
 
@@ -61,8 +64,12 @@ def main():
     sweep_p.add_argument(*quiet_args, **quiet_kwargs)
     sweep_p.add_argument("config_file", help="JSON config file for the sweep")
     sweep_p.add_argument("--api-key", default=None)
-    sweep_p.add_argument("--resume", default=None, metavar="RUN_DIR",
-                         help="Resume a previous sweep from its run directory")
+    sweep_p.add_argument(
+        "--resume",
+        default=None,
+        metavar="RUN_DIR",
+        help="Resume a previous sweep from its run directory",
+    )
 
     # --- list: show environments ---
     sub.add_parser("list", help="List available environments")
@@ -153,11 +160,13 @@ def main():
 def _generate_report(results: list[dict], run_dir):
     """Generate analysis text and graphs into the run directory."""
     from pathlib import Path
+
     run_dir = Path(run_dir)
 
     # Analysis text
     try:
         from .analysis import save_analysis
+
         analysis_path = save_analysis(results, run_dir)
         print(f"Analysis saved to {analysis_path}")
     except Exception as e:
@@ -166,6 +175,7 @@ def _generate_report(results: list[dict], run_dir):
     # Graphs
     try:
         from .graphs import generate_graphs
+
         graphs = generate_graphs(results, run_dir)
         print(f"Graphs saved: {len(graphs)} files in {run_dir / 'graphs'}")
     except ImportError:

@@ -2,10 +2,6 @@
 
 Explore/Exploit benchmark for LLMs. Measures how well language models navigate the exploration vs. exploitation tradeoff across varied scenarios — from slot machines to treasure hunts.
 
-## Why
-
-LLMs default to over-exploitation (greedy behavior), and increasing temperature gives random variation, not directed exploration. This benchmark quantifies that gap across models, temperatures, and task types.
-
 ## Environments
 
 ### Bandits (stationary)

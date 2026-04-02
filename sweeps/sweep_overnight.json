@@ -1,9 +1,9 @@
 {
   "models": [
+    "qwen/qwen3.6-plus:free",
     "openai/gpt-oss-120b:free",
     "nvidia/nemotron-3-super-120b-a12b:free",
     "minimax/minimax-m2.5:free",
-    "qwen/qwen3.6-plus:free",
     "arcee-ai/trinity-large-preview:free"
   ],
   "temperatures": [0.0, 0.3, 0.7, 1.0],

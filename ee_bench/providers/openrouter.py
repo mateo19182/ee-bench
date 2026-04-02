@@ -53,7 +53,13 @@ class OpenRouterProvider:
 
                 resp.raise_for_status()
                 data = resp.json()
-                return data["choices"][0]["message"]["content"].strip()
+                content = data["choices"][0]["message"]["content"]
+                if content is None:
+                    # Model returned null content — treat as transient, retry
+                    delay = base_delay * (2 ** attempt)
+                    time.sleep(min(delay, 120))
+                    continue
+                return content.strip()
 
             except (httpx.TimeoutException, httpx.ConnectError) as e:
                 last_exc = e

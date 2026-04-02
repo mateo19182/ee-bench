@@ -21,6 +21,12 @@ from .providers.openrouter import OpenRouterProvider
 
 console = Console()
 
+
+class EpisodeFailure(Exception):
+    """Raised when an episode cannot continue (e.g. model won't produce valid actions)."""
+    pass
+
+
 # Verbosity levels
 QUIET = 0      # no output except errors
 PROGRESS = 1   # progress bars only (default)
@@ -60,12 +66,13 @@ def run_episode(
     temperature: float,
     horizon: int,
     max_retries: int = 3,
-) -> tuple[list[dict[str, Any]], list[float]]:
+) -> tuple[list[dict[str, Any]], list[float], list[dict[str, Any]]]:
     """Run a single episode: horizon steps of interaction.
 
-    Returns (history, optimal_rewards).
+    Returns (history, optimal_rewards, conversation_log).
     """
     optimal_rewards = []
+    conversation_log: list[dict[str, Any]] = []
 
     if _verbosity >= DEBUG:
         _log(DEBUG, Panel(env.get_system_prompt(), title="[bold]System Prompt[/bold]", border_style="blue"))
@@ -74,6 +81,12 @@ def run_episode(
         messages = _build_messages(env)
         optimal_rewards.append(env.optimal_reward())
 
+        step_log: dict[str, Any] = {
+            "step": step + 1,
+            "messages_sent": messages,
+            "attempts": [],
+        }
+
         if _verbosity >= DEBUG:
             _log(DEBUG, f"\n[dim]── Step {step+1}/{horizon} ──[/dim]")
             _log(DEBUG, Panel(messages[-1]["content"], title="[bold]Action Prompt[/bold]", border_style="cyan"))
@@ -81,10 +94,14 @@ def run_episode(
         # get LLM response with retries for parse failures
         action = None
         for attempt in range(max_retries):
+            attempt_log: dict[str, Any] = {"attempt": attempt + 1}
             try:
                 raw = provider.complete(messages, model=model, temperature=temperature)
+                attempt_log["raw_response"] = raw
             except Exception as e:
+                attempt_log["error"] = str(e)
                 _log(PROGRESS, f"  [red]API error: {e}[/red]")
+                step_log["attempts"].append(attempt_log)
                 time.sleep(2)
                 continue
 
@@ -92,6 +109,9 @@ def run_episode(
                 _log(DEBUG, f"  [magenta]Raw LLM response:[/magenta] {raw!r}")
 
             action = env.parse_action(raw)
+            attempt_log["parsed_action"] = action
+            step_log["attempts"].append(attempt_log)
+
             if action is not None:
                 break
 
@@ -108,17 +128,57 @@ def run_episode(
             messages.append({"role": "user", "content": f"I couldn't understand your response. {hint}"})
 
         if action is None:
-            # fallback: pick a random valid action
-            action = env.rng.choice(env.valid_actions())
-            _log(PROGRESS, f"  [yellow]Step {step+1}: parse failed, random fallback → {action}[/yellow]")
+            step_log["outcome"] = "failure"
+            conversation_log.append(step_log)
+            raise EpisodeFailure(
+                f"Step {step+1}/{horizon}: model failed to produce a valid action after {max_retries} attempts"
+            )
 
         result = env.step(action)
+        step_log["outcome"] = "success"
+        step_log["action"] = action
+        step_log["reward"] = result.reward
+        step_log["feedback"] = result.feedback
+        conversation_log.append(step_log)
 
         if _verbosity >= ACTIONS:
             reward_color = "green" if result.reward > 0.6 else "yellow" if result.reward > 0.3 else "red"
             _log(ACTIONS, f"  [{reward_color}]Step {step+1:>3}[/{reward_color}]: {action:<25} → reward={result.reward:.3f}  │ {result.feedback}")
 
-    return env.history, optimal_rewards
+    return env.history, optimal_rewards, conversation_log
+
+
+def _run_episode_safe(
+    env_cls,
+    seed: int,
+    provider: OpenRouterProvider,
+    model: str,
+    temperature: float,
+    horizon: int,
+    episode_retries: int = 3,
+) -> dict[str, Any] | None:
+    """Run an episode with retries on failure. Returns episode dict or None if unrecoverable."""
+    for attempt in range(episode_retries):
+        env = env_cls(seed=seed)
+        try:
+            history, optimal_rewards, conversation_log = run_episode(
+                env, provider, model, temperature, horizon
+            )
+        except EpisodeFailure as e:
+            _log(PROGRESS, f"  [yellow]Episode failed (attempt {attempt+1}/{episode_retries}): {e}[/yellow]")
+            if attempt < episode_retries - 1:
+                time.sleep(5 * (attempt + 1))
+            continue
+        metrics = compute_all_metrics(
+            history, optimal_rewards, is_stationary=env.is_stationary,
+        )
+        return {
+            "metrics": asdict(metrics),
+            "history": history,
+            "conversation_log": conversation_log,
+        }
+    _log(PROGRESS, f"  [red]Episode skipped after {episode_retries} failures[/red]")
+    return None
 
 
 def run_single(config: ExperimentConfig) -> dict[str, Any]:
@@ -159,41 +219,26 @@ def run_single(config: ExperimentConfig) -> dict[str, Any]:
                 )
                 for rep in range(config.repetitions):
                     seed = config.seed + rep * 1000 + horizon
-                    env = env_cls(seed=seed)
-                    history, optimal_rewards = run_episode(
-                        env, provider, config.model, config.temperature, horizon
+                    ep = _run_episode_safe(
+                        env_cls, seed, provider, config.model, config.temperature, horizon
                     )
-                    metrics = compute_all_metrics(
-                        history, optimal_rewards, is_stationary=env.is_stationary
-                    )
-                    results["episodes"].append({
-                        "horizon": horizon,
-                        "repetition": rep,
-                        "seed": seed,
-                        "metrics": asdict(metrics),
-                        "history": history,
-                    })
+                    if ep is not None:
+                        ep.update({"horizon": horizon, "repetition": rep, "seed": seed})
+                        results["episodes"].append(ep)
                     progress.advance(task)
     else:
         for horizon in config.horizons:
             for rep in range(config.repetitions):
                 _log(ACTIONS, f"\n[bold]━━━ Horizon {horizon} │ Rep {rep+1}/{config.repetitions} ━━━[/bold]")
                 seed = config.seed + rep * 1000 + horizon
-                env = env_cls(seed=seed)
-                history, optimal_rewards = run_episode(
-                    env, provider, config.model, config.temperature, horizon
+                ep = _run_episode_safe(
+                    env_cls, seed, provider, config.model, config.temperature, horizon
                 )
-                metrics = compute_all_metrics(
-                    history, optimal_rewards, is_stationary=env.is_stationary
-                )
-                results["episodes"].append({
-                    "horizon": horizon,
-                    "repetition": rep,
-                    "seed": seed,
-                    "metrics": asdict(metrics),
-                    "history": history,
-                })
-                _log(ACTIONS, f"  [dim]total_reward={metrics.total_reward:.3f}  regret={metrics.total_regret:.3f}  expl_ratio={metrics.final_exploration_ratio:.3f}[/dim]")
+                if ep is not None:
+                    ep.update({"horizon": horizon, "repetition": rep, "seed": seed})
+                    results["episodes"].append(ep)
+                    m = ep["metrics"]
+                    _log(ACTIONS, f"  [dim]total_reward={m['total_reward']:.3f}  regret={m['total_regret']:.3f}  expl_ratio={m['final_exploration_ratio']:.3f}[/dim]")
 
     provider.close()
     return results
@@ -288,24 +333,16 @@ def run_sweep(
                         for horizon in config.horizons:
                             for rep in range(config.repetitions):
                                 seed = config.seed + rep * 1000 + horizon
-                                env = env_cls(seed=seed)
                                 progress.update(
                                     main_task,
                                     description=f"{model} / {env_name} / t={temp} / h={horizon} / r={rep+1}",
                                 )
-                                history, optimal_rewards = run_episode(
-                                    env, provider, model, temp, horizon
+                                ep = _run_episode_safe(
+                                    env_cls, seed, provider, model, temp, horizon
                                 )
-                                metrics = compute_all_metrics(
-                                    history, optimal_rewards, is_stationary=env.is_stationary,
-                                )
-                                run_result["episodes"].append({
-                                    "horizon": horizon,
-                                    "repetition": rep,
-                                    "seed": seed,
-                                    "metrics": asdict(metrics),
-                                    "history": history,
-                                })
+                                if ep is not None:
+                                    ep.update({"horizon": horizon, "repetition": rep, "seed": seed})
+                                    run_result["episodes"].append(ep)
                                 progress.advance(main_task)
                         all_results.append(run_result)
                         _flush_results(all_results, run_dir)
@@ -328,21 +365,13 @@ def run_sweep(
                         for rep in range(config.repetitions):
                             _log(ACTIONS, f"\n[bold]━━━ {model} / {env_name} / t={temp} / h={horizon} / r={rep+1} ━━━[/bold]")
                             seed = config.seed + rep * 1000 + horizon
-                            env = env_cls(seed=seed)
-                            history, optimal_rewards = run_episode(
-                                env, provider, model, temp, horizon
+                            ep = _run_episode_safe(
+                                env_cls, seed, provider, model, temp, horizon
                             )
-                            metrics = compute_all_metrics(
-                                history, optimal_rewards, is_stationary=env.is_stationary,
-                            )
-                            run_result["episodes"].append({
-                                "horizon": horizon,
-                                "repetition": rep,
-                                "seed": seed,
-                                "metrics": asdict(metrics),
-                                "history": history,
-                            })
-                            _log(ACTIONS, f"  [dim]reward={metrics.total_reward:.3f}  regret={metrics.total_regret:.3f}[/dim]")
+                            if ep is not None:
+                                ep.update({"horizon": horizon, "repetition": rep, "seed": seed})
+                                run_result["episodes"].append(ep)
+                                _log(ACTIONS, f"  [dim]reward={ep['metrics']['total_reward']:.3f}  regret={ep['metrics']['total_regret']:.3f}[/dim]")
                     all_results.append(run_result)
                     _flush_results(all_results, run_dir)
                     _log(ACTIONS, f"  [green]Checkpoint saved: {len(all_results)}/{total_combos} combos[/green]")

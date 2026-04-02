@@ -199,16 +199,68 @@ def run_single(config: ExperimentConfig) -> dict[str, Any]:
     return results
 
 
-def run_sweep(config: SweepConfig) -> list[dict[str, Any]]:
-    """Run a full parameter sweep."""
+def _combo_key(model: str, env_name: str, temp: float) -> str:
+    """Unique key for a (model, environment, temperature) combination."""
+    return f"{model}|{env_name}|{temp}"
+
+
+def _completed_combos(results: list[dict[str, Any]]) -> set[str]:
+    """Extract the set of completed combo keys from existing results."""
+    return {_combo_key(r["model"], r["environment"], r["temperature"]) for r in results}
+
+
+def _flush_results(all_results: list[dict[str, Any]], run_dir: Path):
+    """Atomically write current results to disk."""
+    filepath = run_dir / "results.json"
+    tmp = filepath.with_suffix(".tmp")
+    with open(tmp, "w") as f:
+        json.dump(all_results, f, indent=2, default=str)
+    tmp.rename(filepath)
+
+
+def run_sweep(
+    config: SweepConfig,
+    run_dir: Path | None = None,
+    existing_results: list[dict[str, Any]] | None = None,
+) -> tuple[list[dict[str, Any]], Path]:
+    """Run a full parameter sweep with incremental saves.
+
+    Args:
+        config: Sweep configuration.
+        run_dir: Directory to save results into. Created if None.
+        existing_results: Previously completed results (for --resume).
+
+    Returns:
+        (all_results, run_dir) — includes both existing and new results.
+    """
     provider = OpenRouterProvider(config.api_key, config.base_url)
-    all_results = []
+
+    # Set up run directory
+    if run_dir is None:
+        timestamp = time.strftime("%Y%m%d_%H%M%S")
+        run_dir = Path(config.results_dir) / f"sweep_{timestamp}"
+    run_dir.mkdir(parents=True, exist_ok=True)
+
+    all_results = list(existing_results) if existing_results else []
+    done = _completed_combos(all_results)
 
     envs = config.environments or list(ENV_MAP.keys())
     models = config.models
 
-    total = len(models) * len(envs) * len(config.temperatures) * len(config.horizons) * config.repetitions
-    _log(PROGRESS, f"[bold]Sweep:[/bold] {len(models)} models × {len(envs)} envs × {len(config.temperatures)} temps × {len(config.horizons)} horizons × {config.repetitions} reps = {total} episodes")
+    # Count total and already-done episodes for progress
+    episodes_per_combo = len(config.horizons) * config.repetitions
+    total_combos = len(models) * len(envs) * len(config.temperatures)
+    skipped_combos = sum(
+        1 for m in models for e in envs for t in config.temperatures
+        if _combo_key(m, e, t) in done
+    )
+    total_episodes = total_combos * episodes_per_combo
+    skipped_episodes = skipped_combos * episodes_per_combo
+    remaining = total_episodes - skipped_episodes
+
+    if skipped_combos:
+        _log(PROGRESS, f"[bold]Resuming:[/bold] {skipped_combos}/{total_combos} combos already done, {remaining} episodes remaining")
+    _log(PROGRESS, f"[bold]Sweep:[/bold] {len(models)} models × {len(envs)} envs × {len(config.temperatures)} temps × {len(config.horizons)} horizons × {config.repetitions} reps = {total_episodes} episodes")
 
     use_progress_bar = _verbosity == PROGRESS
 
@@ -220,10 +272,12 @@ def run_sweep(config: SweepConfig) -> list[dict[str, Any]]:
             TaskProgressColumn(),
             console=console,
         ) as progress:
-            main_task = progress.add_task("Sweep", total=total)
+            main_task = progress.add_task("Sweep", total=remaining)
             for model in models:
                 for env_name in envs:
                     for temp in config.temperatures:
+                        if _combo_key(model, env_name, temp) in done:
+                            continue
                         run_result = {
                             "model": model,
                             "environment": env_name,
@@ -254,10 +308,15 @@ def run_sweep(config: SweepConfig) -> list[dict[str, Any]]:
                                 })
                                 progress.advance(main_task)
                         all_results.append(run_result)
+                        _flush_results(all_results, run_dir)
+                        _log(PROGRESS, f"  [dim]checkpoint: {len(all_results)}/{total_combos} combos saved[/dim]")
     else:
         for model in models:
             for env_name in envs:
                 for temp in config.temperatures:
+                    if _combo_key(model, env_name, temp) in done:
+                        _log(ACTIONS, f"\n[dim]Skipping {model} / {env_name} / t={temp} (already done)[/dim]")
+                        continue
                     run_result = {
                         "model": model,
                         "environment": env_name,
@@ -285,9 +344,11 @@ def run_sweep(config: SweepConfig) -> list[dict[str, Any]]:
                             })
                             _log(ACTIONS, f"  [dim]reward={metrics.total_reward:.3f}  regret={metrics.total_regret:.3f}[/dim]")
                     all_results.append(run_result)
+                    _flush_results(all_results, run_dir)
+                    _log(ACTIONS, f"  [green]Checkpoint saved: {len(all_results)}/{total_combos} combos[/green]")
 
     provider.close()
-    return all_results
+    return all_results, run_dir
 
 
 def save_results(results: dict | list, output_dir: str, name: str | None = None) -> Path:

@@ -61,6 +61,8 @@ def main():
     sweep_p.add_argument(*quiet_args, **quiet_kwargs)
     sweep_p.add_argument("config_file", help="JSON config file for the sweep")
     sweep_p.add_argument("--api-key", default=None)
+    sweep_p.add_argument("--resume", default=None, metavar="RUN_DIR",
+                         help="Resume a previous sweep from its run directory")
 
     # --- list: show environments ---
     sub.add_parser("list", help="List available environments")
@@ -105,6 +107,8 @@ def main():
         _generate_report([results], run_dir)
 
     elif args.command == "sweep":
+        from pathlib import Path
+
         with open(args.config_file) as f:
             raw = json.load(f)
 
@@ -124,8 +128,22 @@ def main():
             base_url=raw.get("base_url", "https://openrouter.ai/api/v1"),
             results_dir=raw.get("results_dir", "results"),
         )
-        results = run_sweep(config)
-        run_dir = save_results(results, config.results_dir, name="sweep")
+
+        # Resume support
+        resume_dir = None
+        existing_results = None
+        if args.resume:
+            resume_dir = Path(args.resume)
+            results_file = resume_dir / "results.json"
+            if results_file.exists():
+                with open(results_file) as f:
+                    existing_results = json.load(f)
+                if not isinstance(existing_results, list):
+                    existing_results = [existing_results]
+            else:
+                print(f"Warning: no results.json in {resume_dir}, starting fresh", file=sys.stderr)
+
+        results, run_dir = run_sweep(config, run_dir=resume_dir, existing_results=existing_results)
         _generate_report(results, run_dir)
 
     else:

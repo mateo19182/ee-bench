@@ -162,3 +162,17 @@ sweeps/                 # Sweep configuration files
 ├── sweep_example.json
 └── sweep_test.json
 ```
+
+## Relevant Literature
+
+- **[Should You Use Your Large Language Model to Explore or Exploit?](https://arxiv.org/abs/2502.00225)** (Harris & Slivkins, 2026) — Evaluates LLMs as separate exploration or exploitation oracles in contextual bandit tasks. Finds reasoning models show promise for exploitation with tool use, while LLMs help explore large action spaces with inherent semantics.
+
+- **[Disentangling Exploration of Large Language Models by Optimal Exploitation](https://arxiv.org/abs/2501.08925)** (Grams et al., 2025) — Proposes measuring exploration via optimal exploitation oracles. Shows most LLMs struggle with state space exploration, with stronger exploration correlating to reasoning capabilities.
+
+- **[Beyond the Exploration-Exploitation Trade-off: A Hidden State Approach for LLM Reasoning in RLVR](https://arxiv.org/abs/2509.23808)** (Huang et al., 2025) — Introduces VERL, which uses Effective Rank and its derivatives to decouple exploration and exploitation at the hidden-state level, achieving up to 21.4% accuracy improvement on reasoning benchmarks.
+
+- **[Comparing Exploration-Exploitation Strategies of LLMs and Humans](https://arxiv.org/abs/2505.09901)** (Zhang et al., 2025) — Uses multi-armed bandit experiments to compare LLM and human E&E strategies. Finds thinking-enabled LLMs show more human-like behavior but struggle with directed exploration in non-stationary settings.
+
+- **[Large Language Model-Enhanced Multi-Armed Bandits](https://arxiv.org/abs/2502.01118)** (Sun et al., 2025) — Proposes combining classical MAB algorithms (Thompson Sampling, SquareCB) with LLMs for reward prediction rather than direct arm selection, achieving better exploration-exploitation balance.
+
+- **[Multi-Armed Bandits Meet Large Language Models](https://arxiv.org/abs/2505.13355)** (Bouneffouf & Feraud, 2025) — Survey exploring bidirectional synergy: bandit algorithms improve LLM training/prompt optimization, while LLMs enhance bandits through contextual understanding and natural language feedback.

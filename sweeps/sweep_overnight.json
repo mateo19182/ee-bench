@@ -1,12 +1,12 @@
 {
   "models": [
+    "minimax/minimax-m2.5:free",
     "qwen/qwen3.6-plus:free",
     "openai/gpt-oss-120b:free",
     "nvidia/nemotron-3-super-120b-a12b:free",
-    "minimax/minimax-m2.5:free",
     "arcee-ai/trinity-large-preview:free"
   ],
-  "temperatures": [0.0, 0.3, 0.7, 1.0],
+  "temperatures": [0.0, 0.5, 1.0],
   "environments": [
     "casino_slot_machines",
     "restaurant_picker",
@@ -17,7 +17,7 @@
     "alchemy_lab",
     "radio_tuner"
   ],
-  "horizons": [20, 100, 500],
+  "horizons": [25],
   "repetitions": 5,
   "seed": 42,
   "results_dir": "results"

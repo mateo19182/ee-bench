@@ -124,7 +124,7 @@ class Environment(abc.ABC):
         """Append standard format instruction to a prompt."""
         actions = self.valid_actions()
         if len(actions) <= 20:
-            instruction = f"\n\nWhen responding, output ONLY the exact name from this list: {', '.join(actions)}"
+            instruction = f"\n\nWhen responding, output the exact name from this list at the end of your response: {', '.join(actions)}"
         else:
-            instruction = "\n\nWhen responding, output ONLY the exact name of your choice."
+            instruction = "\n\nWhen responding, output the exact name of your choice at the end of your response."
         return prompt + instruction

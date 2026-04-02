@@ -101,7 +101,8 @@ def main():
             results_dir=args.output,
         )
         results = run_single(config)
-        save_results(results, config.results_dir)
+        run_dir = save_results(results, config.results_dir)
+        _generate_report([results], run_dir)
 
     elif args.command == "sweep":
         with open(args.config_file) as f:
@@ -124,10 +125,35 @@ def main():
             results_dir=raw.get("results_dir", "results"),
         )
         results = run_sweep(config)
-        save_results(results, config.results_dir, name="sweep")
+        run_dir = save_results(results, config.results_dir, name="sweep")
+        _generate_report(results, run_dir)
 
     else:
         parser.print_help()
+
+
+def _generate_report(results: list[dict], run_dir):
+    """Generate analysis text and graphs into the run directory."""
+    from pathlib import Path
+    run_dir = Path(run_dir)
+
+    # Analysis text
+    try:
+        from .analysis import save_analysis
+        analysis_path = save_analysis(results, run_dir)
+        print(f"Analysis saved to {analysis_path}")
+    except Exception as e:
+        print(f"Warning: could not generate analysis: {e}", file=sys.stderr)
+
+    # Graphs
+    try:
+        from .graphs import generate_graphs
+        graphs = generate_graphs(results, run_dir)
+        print(f"Graphs saved: {len(graphs)} files in {run_dir / 'graphs'}")
+    except ImportError:
+        print("Install matplotlib for graphs: pip install ee-bench[analysis]", file=sys.stderr)
+    except Exception as e:
+        print(f"Warning: could not generate graphs: {e}", file=sys.stderr)
 
 
 if __name__ == "__main__":

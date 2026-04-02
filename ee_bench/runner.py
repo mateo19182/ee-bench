@@ -290,18 +290,22 @@ def run_sweep(config: SweepConfig) -> list[dict[str, Any]]:
     return all_results
 
 
-def save_results(results: dict | list, output_dir: str, name: str | None = None):
-    """Save results to JSON."""
-    path = Path(output_dir)
-    path.mkdir(parents=True, exist_ok=True)
+def save_results(results: dict | list, output_dir: str, name: str | None = None) -> Path:
+    """Save results to a timestamped run directory.
 
+    Creates: <output_dir>/<name>_<timestamp>/results.json
+    Returns the run directory path.
+    """
+    timestamp = time.strftime("%Y%m%d_%H%M%S")
     if name is None:
-        timestamp = time.strftime("%Y%m%d_%H%M%S")
-        name = f"run_{timestamp}"
+        name = "run"
 
-    filepath = path / f"{name}.json"
+    run_dir = Path(output_dir) / f"{name}_{timestamp}"
+    run_dir.mkdir(parents=True, exist_ok=True)
+
+    filepath = run_dir / "results.json"
     with open(filepath, "w") as f:
         json.dump(results, f, indent=2, default=str)
 
     _log(PROGRESS, f"[green]Results saved to {filepath}[/green]")
-    return filepath
+    return run_dir

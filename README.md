@@ -26,9 +26,26 @@ Explore/Exploit benchmark for LLMs. Measures how well language models navigate t
 
 ## Metrics
 
-- **Cumulative regret** — gap between LLM's rewards and the theoretical optimum
-- **Exploration ratio** — % of actions that deviate from the empirically best option over time
-- **Adaptation speed** — how fast the LLM shifts strategy after environment changes (non-stationary only)
+Each run tracks the following metrics per episode. After a run completes, results, analysis, and graphs are saved to a timestamped directory (e.g. `results/sweep_20260402_143000/`).
+
+### Per-step metrics
+
+| Metric | What it measures | Better |
+|---|---|---|
+| **Cumulative regret curve** | Running sum of `(optimal_reward - actual_reward)` at each step. Shows how quickly the model converges on good actions. | Lower |
+| **Exploration ratio curve** | Rolling-window fraction of actions that differ from the empirically best action so far. Tracks the explore/exploit balance over time. | Depends — should start high (exploring) and decay (exploiting) |
+
+### Per-episode summary metrics
+
+| Metric | What it measures | Better |
+|---|---|---|
+| **Total reward** | Sum of all rewards across the episode. | Higher |
+| **Mean reward** | Average reward per step (`total_reward / total_steps`). Comparable across different horizon lengths. | Higher |
+| **Total regret** | Final value of the cumulative regret curve — total opportunity cost vs. always picking optimally. | Lower |
+| **Final exploration ratio** | Average exploration ratio over the last 10 steps. Shows whether the model settled on an action or kept wandering. | Lower (means the model exploited what it learned) |
+| **Unique actions tried** | Count of distinct actions taken during the episode. | Depends — too few means the model never explored, too many means it never committed |
+| **Adaptation speed** | Average number of steps to switch strategy after an environment shift. Only computed for non-stationary environments (Clinical Trial, Venture Capitalist). | Lower (faster adaptation) |
+| **Adaptation events** | List of detected environment shifts and how the model responded. Each event records the shift step and steps until the model changed its action. | More events detected = longer horizon capturing more shifts |
 
 ## Setup
 
@@ -85,23 +102,25 @@ uv run python -m ee_bench.cli -q run --model ... --env ...
 
 ### Parameter sweep
 
-Edit `sweep_example.json` to configure models, temperatures, environments, and horizons, then:
+Edit a sweep config in `sweeps/` to configure models, temperatures, environments, and horizons, then:
 
 ```bash
-uv run ee-bench sweep sweep_example.json
+uv run ee-bench sweep sweeps/sweep_example.json
 ```
 
 ### Analyze results
 
-```bash
-# Full analysis
-uv run python analyze.py results/sweep.json --all
+Analysis and graphs are generated automatically after each run. To re-analyze an existing results file:
 
-# Specific analyses
-uv run python analyze.py results/sweep.json --compare-models
-uv run python analyze.py results/sweep.json --compare-temps
-uv run python analyze.py results/sweep.json --regret-curves
-uv run python analyze.py results/sweep.json --adaptation
+```bash
+# Full analysis + graphs (saved to same directory as results file)
+uv run ee-bench-analyze results/sweep_20260402_143000/results.json --all
+
+# Specific analyses (printed to stdout only)
+uv run ee-bench-analyze results/sweep_20260402_143000/results.json --compare-models
+uv run ee-bench-analyze results/sweep_20260402_143000/results.json --compare-temps
+uv run ee-bench-analyze results/sweep_20260402_143000/results.json --regret-curves
+uv run ee-bench-analyze results/sweep_20260402_143000/results.json --adaptation
 ```
 
 ## Research questions
@@ -112,6 +131,21 @@ uv run python analyze.py results/sweep.json --adaptation
 - Do non-stationary environments expose qualitatively different failures?
 - Does the task framing (narrative) affect exploration strategy?
 
+### Run output
+
+Each run creates a timestamped directory with everything in one place:
+
+```
+results/sweep_20260402_143000/
+├── results.json                            # Raw results data
+├── analysis.txt                            # Full text analysis
+└── graphs/
+    ├── regret_casino_slot_machines_h20.png  # Cumulative regret curves
+    ├── exploration_casino_slot_machines_h20.png  # Exploration ratio over time
+    ├── model_comparison.png                 # Reward & regret bar charts
+    └── temperature_effects.png              # Temperature vs performance
+```
+
 ## Project structure
 
 ```
@@ -119,9 +153,12 @@ ee_bench/
 ├── environments/       # Bandit + search environments
 ├── providers/          # OpenRouter adapter
 ├── metrics/            # Regret, exploration ratio, adaptation speed
+├── analysis.py         # Analysis functions + CLI (ee-bench-analyze)
+├── graphs.py           # Matplotlib graph generation
 ├── runner.py           # Experiment orchestration
 ├── config.py           # Experiment & sweep configs
-└── cli.py              # CLI entry point
-analyze.py              # Post-hoc analysis scripts
-sweep_example.json      # Example sweep configuration
+└── cli.py              # CLI entry point (ee-bench)
+sweeps/                 # Sweep configuration files
+├── sweep_example.json
+└── sweep_test.json
 ```

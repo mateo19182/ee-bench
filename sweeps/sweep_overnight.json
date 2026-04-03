@@ -1,12 +1,12 @@
 {
   "models": [
-    "minimax/minimax-m2.5:free",
+    "nvidia/nemotron-3-super-120b-a12b:free",
+    "arcee-ai/trinity-large-preview:free",
     "qwen/qwen3.6-plus:free",
     "openai/gpt-oss-120b:free",
-    "nvidia/nemotron-3-super-120b-a12b:free",
-    "arcee-ai/trinity-large-preview:free"
+    "minimax/minimax-m2.5:free"
   ],
-  "temperatures": [0.0, 0.5, 1.0],
+  "temperatures": [0.0, 1.0],
   "environments": [
     "casino_slot_machines",
     "restaurant_picker",
@@ -18,7 +18,7 @@
     "radio_tuner"
   ],
   "horizons": [25],
-  "repetitions": 5,
+  "repetitions": 2,
   "seed": 42,
   "results_dir": "results"
 }

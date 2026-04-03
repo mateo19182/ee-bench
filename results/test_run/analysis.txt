@@ -1,0 +1,27 @@
+
+Model                                    Env                        Temp  Horizon  AvgReward  AvgRegret  ExplRatio  UniqueAct
+==================================================================================================================================
+qwen/qwen3.6-plus:free                   casino_slot_machines        0.7       20     0.7473       3.26      0.300        5.0
+arcee-ai/trinity-large-preview:free      casino_slot_machines        0.7       20     0.7636       2.94      0.502        4.8
+
+--- Model Comparison (averaged across envs & horizons) ---
+
+Model                                          MeanReward  MeanRegret  ExplRatio
+--------------------------------------------------------------------------------
+arcee-ai/trinity-large-preview:free                0.7636        2.94      0.502
+qwen/qwen3.6-plus:free                             0.7473        3.26      0.300
+
+--- Temperature Effects ---
+
+  Temp  MeanReward  MeanRegret  ExplRatio     N
+--------------------------------------------------
+  0.70      0.7555        3.10      0.401    10
+
+--- Regret Curves (avg cumulative regret at each step) ---
+
+qwen/qwen3.6-plus:free | casino_slot_machines | t=0.7 | h=20: r1:0.27 -> r3:1.14 -> r5:1.62 -> r7:1.89 -> r9:2.09 -> r11:2.30 -> r13:2.61 -> r15:2.70 -> r17:2.93 -> r20:3.26
+arcee-ai/trinity-large-preview:free | casino_slot_machines | t=0.7 | h=20: r1:0.27 -> r3:1.06 -> r5:1.50 -> r7:1.73 -> r9:1.85 -> r11:2.05 -> r13:2.36 -> r15:2.46 -> r17:2.69 -> r20:2.94
+
+--- Adaptation Speed (non-stationary envs only) ---
+
+No adaptation events detected (need non-stationary envs with enough horizon).

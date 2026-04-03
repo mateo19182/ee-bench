@@ -1,0 +1,1826 @@
+[
+  {
+    "model": "qwen/qwen3.6-plus:free",
+    "environment": "casino_slot_machines",
+    "temperature": 0.7,
+    "episodes": [
+      {
+        "horizon": 20,
+        "repetition": 0,
+        "seed": 62,
+        "metrics": {
+          "total_reward": 13.06840948160118,
+          "total_regret": 5.679490293757244,
+          "cumulative_regret_curve": [
+            0.5535633118579933,
+            0.8624542275861586,
+            1.106749357244854,
+            1.8720620017979455,
+            1.8699814655704392,
+            2.1233349801792256,
+            2.4707233494442473,
+            3.1695893463394684,
+            3.3098024086075997,
+            3.6423648888373843,
+            3.809241605538535,
+            3.914224276360566,
+            4.357896382505443,
+            4.484318054412295,
+            4.556220719959414,
+            4.692112677274725,
+            5.023156742683003,
+            5.321413138078244,
+            5.50076428476743,
+            5.679490293757244
+          ],
+          "exploration_ratio_curve": [
+            1.0,
+            0.5,
+            0.6666666666666666,
+            0.75,
+            0.8,
+            0.8333333333333334,
+            0.7142857142857143,
+            0.875,
+            0.7777777777777778,
+            0.7,
+            0.6,
+            0.5,
+            0.5,
+            0.4,
+            0.3,
+            0.2,
+            0.1,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "adaptation_events": [],
+          "unique_actions_tried": 6,
+          "total_steps": 20,
+          "mean_reward": 0.653420474080059,
+          "final_exploration_ratio": 0.26,
+          "adaptation_speed": null
+        },
+        "history": [
+          {
+            "round": 1,
+            "action": "Rusty Red",
+            "reward": 0.3838316769099278,
+            "summary": "Played Rusty Red \u2192 $0.38"
+          },
+          {
+            "round": 2,
+            "action": "Lucky Lemon",
+            "reward": 0.6285040730397559,
+            "summary": "Played Lucky Lemon \u2192 $0.63"
+          },
+          {
+            "round": 3,
+            "action": "Midnight Blue",
+            "reward": 0.6930998591092259,
+            "summary": "Played Midnight Blue \u2192 $0.69"
+          },
+          {
+            "round": 4,
+            "action": "Golden Goose",
+            "reward": 0.1720823442148295,
+            "summary": "Played Golden Goose \u2192 $0.17"
+          },
+          {
+            "round": 5,
+            "action": "Purple Haze",
+            "reward": 0.9394755249954275,
+            "summary": "Played Purple Haze \u2192 $0.94"
+          },
+          {
+            "round": 6,
+            "action": "Silver Streak",
+            "reward": 0.6840414741591345,
+            "summary": "Played Silver Streak \u2192 $0.68"
+          },
+          {
+            "round": 7,
+            "action": "Purple Haze",
+            "reward": 0.5900066195028997,
+            "summary": "Played Purple Haze \u2192 $0.59"
+          },
+          {
+            "round": 8,
+            "action": "Purple Haze",
+            "reward": 0.2385289918727002,
+            "summary": "Played Purple Haze \u2192 $0.24"
+          },
+          {
+            "round": 9,
+            "action": "Midnight Blue",
+            "reward": 0.7971819264997898,
+            "summary": "Played Midnight Blue \u2192 $0.80"
+          },
+          {
+            "round": 10,
+            "action": "Midnight Blue",
+            "reward": 0.6048325085381366,
+            "summary": "Played Midnight Blue \u2192 $0.60"
+          },
+          {
+            "round": 11,
+            "action": "Midnight Blue",
+            "reward": 0.7705182720667706,
+            "summary": "Played Midnight Blue \u2192 $0.77"
+          },
+          {
+            "round": 12,
+            "action": "Midnight Blue",
+            "reward": 0.8324123179458902,
+            "summary": "Played Midnight Blue \u2192 $0.83"
+          },
+          {
+            "round": 13,
+            "action": "Midnight Blue",
+            "reward": 0.493722882623044,
+            "summary": "Played Midnight Blue \u2192 $0.49"
+          },
+          {
+            "round": 14,
+            "action": "Midnight Blue",
+            "reward": 0.8109733168610684,
+            "summary": "Played Midnight Blue \u2192 $0.81"
+          },
+          {
+            "round": 15,
+            "action": "Midnight Blue",
+            "reward": 0.8654923232208029,
+            "summary": "Played Midnight Blue \u2192 $0.87"
+          },
+          {
+            "round": 16,
+            "action": "Midnight Blue",
+            "reward": 0.80150303145261,
+            "summary": "Played Midnight Blue \u2192 $0.80"
+          },
+          {
+            "round": 17,
+            "action": "Midnight Blue",
+            "reward": 0.6063509233596429,
+            "summary": "Played Midnight Blue \u2192 $0.61"
+          },
+          {
+            "round": 18,
+            "action": "Midnight Blue",
+            "reward": 0.6391385933726808,
+            "summary": "Played Midnight Blue \u2192 $0.64"
+          },
+          {
+            "round": 19,
+            "action": "Midnight Blue",
+            "reward": 0.7580438420787349,
+            "summary": "Played Midnight Blue \u2192 $0.76"
+          },
+          {
+            "round": 20,
+            "action": "Midnight Blue",
+            "reward": 0.7586689797781073,
+            "summary": "Played Midnight Blue \u2192 $0.76"
+          }
+        ]
+      },
+      {
+        "horizon": 20,
+        "repetition": 1,
+        "seed": 1062,
+        "metrics": {
+          "total_reward": 14.560316601834913,
+          "total_regret": 2.637183788972384,
+          "cumulative_regret_curve": [
+            0.19862298749208473,
+            0.8874313930654211,
+            1.31616353255287,
+            1.6548454999008637,
+            1.572647096189725,
+            1.7336440855364526,
+            1.8091525125734682,
+            1.7641778925733225,
+            1.743494602673929,
+            1.7891200150282622,
+            1.8456267525696952,
+            1.8978865686013702,
+            2.2519812512955375,
+            2.1118562708359025,
+            2.2125517461581947,
+            2.0724267656985598,
+            2.2001963348453395,
+            2.1601133021194356,
+            2.381250288633302,
+            2.637183788972384
+          ],
+          "exploration_ratio_curve": [
+            1.0,
+            0.5,
+            0.6666666666666666,
+            0.75,
+            0.8,
+            0.6666666666666666,
+            0.5714285714285714,
+            0.5,
+            0.4444444444444444,
+            0.4,
+            0.3,
+            0.2,
+            0.1,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "adaptation_events": [],
+          "unique_actions_tried": 5,
+          "total_steps": 20,
+          "mean_reward": 0.7280158300917456,
+          "final_exploration_ratio": 0.06,
+          "adaptation_speed": null
+        },
+        "history": [
+          {
+            "round": 1,
+            "action": "Rusty Red",
+            "reward": 0.6612520320482801,
+            "summary": "Played Rusty Red \u2192 $0.66"
+          },
+          {
+            "round": 2,
+            "action": "Lucky Lemon",
+            "reward": 0.1710666139670285,
+            "summary": "Played Lucky Lemon \u2192 $0.17"
+          },
+          {
+            "round": 3,
+            "action": "Midnight Blue",
+            "reward": 0.43114288005291596,
+            "summary": "Played Midnight Blue \u2192 $0.43"
+          },
+          {
+            "round": 4,
+            "action": "Golden Goose",
+            "reward": 0.521193052192371,
+            "summary": "Played Golden Goose \u2192 $0.52"
+          },
+          {
+            "round": 5,
+            "action": "Purple Haze",
+            "reward": 0.9420734232515037,
+            "summary": "Played Purple Haze \u2192 $0.94"
+          },
+          {
+            "round": 6,
+            "action": "Purple Haze",
+            "reward": 0.6988780301936371,
+            "summary": "Played Purple Haze \u2192 $0.70"
+          },
+          {
+            "round": 7,
+            "action": "Purple Haze",
+            "reward": 0.7843665925033491,
+            "summary": "Played Purple Haze \u2192 $0.78"
+          },
+          {
+            "round": 8,
+            "action": "Purple Haze",
+            "reward": 0.9048496395405106,
+            "summary": "Played Purple Haze \u2192 $0.90"
+          },
+          {
+            "round": 9,
+            "action": "Purple Haze",
+            "reward": 0.8805583094397581,
+            "summary": "Played Purple Haze \u2192 $0.88"
+          },
+          {
+            "round": 10,
+            "action": "Purple Haze",
+            "reward": 0.8142496071860316,
+            "summary": "Played Purple Haze \u2192 $0.81"
+          },
+          {
+            "round": 11,
+            "action": "Purple Haze",
+            "reward": 0.8033682819989318,
+            "summary": "Played Purple Haze \u2192 $0.80"
+          },
+          {
+            "round": 12,
+            "action": "Purple Haze",
+            "reward": 0.8076152035086898,
+            "summary": "Played Purple Haze \u2192 $0.81"
+          },
+          {
+            "round": 13,
+            "action": "Purple Haze",
+            "reward": 0.5057803368461975,
+            "summary": "Played Purple Haze \u2192 $0.51"
+          },
+          {
+            "round": 14,
+            "action": "Purple Haze",
+            "reward": 1.0,
+            "summary": "Played Purple Haze \u2192 $1.00"
+          },
+          {
+            "round": 15,
+            "action": "Purple Haze",
+            "reward": 0.7591795442180728,
+            "summary": "Played Purple Haze \u2192 $0.76"
+          },
+          {
+            "round": 16,
+            "action": "Purple Haze",
+            "reward": 1.0,
+            "summary": "Played Purple Haze \u2192 $1.00"
+          },
+          {
+            "round": 17,
+            "action": "Purple Haze",
+            "reward": 0.7321054503935852,
+            "summary": "Played Purple Haze \u2192 $0.73"
+          },
+          {
+            "round": 18,
+            "action": "Purple Haze",
+            "reward": 0.8999580522662686,
+            "summary": "Played Purple Haze \u2192 $0.90"
+          },
+          {
+            "round": 19,
+            "action": "Purple Haze",
+            "reward": 0.6387380330264989,
+            "summary": "Played Purple Haze \u2192 $0.64"
+          },
+          {
+            "round": 20,
+            "action": "Purple Haze",
+            "reward": 0.6039415192012825,
+            "summary": "Played Purple Haze \u2192 $0.60"
+          }
+        ]
+      },
+      {
+        "horizon": 20,
+        "repetition": 2,
+        "seed": 2062,
+        "metrics": {
+          "total_reward": 16.051685448313666,
+          "total_regret": 1.4825983558752285,
+          "cumulative_regret_curve": [
+            -0.09611402670377978,
+            0.5179098382477415,
+            0.8940529115259112,
+            1.6032238321944727,
+            1.5093017060097638,
+            1.5146376807546553,
+            1.4572710072554413,
+            1.3649311083203244,
+            1.4423109951507085,
+            1.3190251853601531,
+            1.5399903349004262,
+            1.591054074708682,
+            1.4677682649181267,
+            1.3444824551275714,
+            1.4113996348977662,
+            1.6013587908802553,
+            1.683076600067742,
+            1.6470502334927941,
+            1.6058841656657838,
+            1.4825983558752285
+          ],
+          "exploration_ratio_curve": [
+            1.0,
+            0.5,
+            0.6666666666666666,
+            0.5,
+            0.8,
+            0.6666666666666666,
+            0.5714285714285714,
+            0.5,
+            0.4444444444444444,
+            0.4,
+            0.3,
+            0.2,
+            0.1,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "adaptation_events": [],
+          "unique_actions_tried": 4,
+          "total_steps": 20,
+          "mean_reward": 0.8025842724156831,
+          "final_exploration_ratio": 0.06,
+          "adaptation_speed": null
+        },
+        "history": [
+          {
+            "round": 1,
+            "action": "Rusty Red",
+            "reward": 0.9728282169132244,
+            "summary": "Played Rusty Red \u2192 $0.97"
+          },
+          {
+            "round": 2,
+            "action": "Lucky Lemon",
+            "reward": 0.26269032525792335,
+            "summary": "Played Lucky Lemon \u2192 $0.26"
+          },
+          {
+            "round": 3,
+            "action": "Midnight Blue",
+            "reward": 0.500571116931275,
+            "summary": "Played Midnight Blue \u2192 $0.50"
+          },
+          {
+            "round": 4,
+            "action": "Rusty Red",
+            "reward": 0.16754326954088308,
+            "summary": "Played Rusty Red \u2192 $0.17"
+          },
+          {
+            "round": 5,
+            "action": "Golden Goose",
+            "reward": 0.9706363163941536,
+            "summary": "Played Golden Goose \u2192 $0.97"
+          },
+          {
+            "round": 6,
+            "action": "Golden Goose",
+            "reward": 0.8713782154645531,
+            "summary": "Played Golden Goose \u2192 $0.87"
+          },
+          {
+            "round": 7,
+            "action": "Golden Goose",
+            "reward": 0.9340808637086586,
+            "summary": "Played Golden Goose \u2192 $0.93"
+          },
+          {
+            "round": 8,
+            "action": "Golden Goose",
+            "reward": 0.9690540891445616,
+            "summary": "Played Golden Goose \u2192 $0.97"
+          },
+          {
+            "round": 9,
+            "action": "Golden Goose",
+            "reward": 0.7993343033790606,
+            "summary": "Played Golden Goose \u2192 $0.80"
+          },
+          {
+            "round": 10,
+            "action": "Golden Goose",
+            "reward": 1.0,
+            "summary": "Played Golden Goose \u2192 $1.00"
+          },
+          {
+            "round": 11,
+            "action": "Golden Goose",
+            "reward": 0.6557490406691715,
+            "summary": "Played Golden Goose \u2192 $0.66"
+          },
+          {
+            "round": 12,
+            "action": "Golden Goose",
+            "reward": 0.8256504504011888,
+            "summary": "Played Golden Goose \u2192 $0.83"
+          },
+          {
+            "round": 13,
+            "action": "Golden Goose",
+            "reward": 1.0,
+            "summary": "Played Golden Goose \u2192 $1.00"
+          },
+          {
+            "round": 14,
+            "action": "Golden Goose",
+            "reward": 1.0,
+            "summary": "Played Golden Goose \u2192 $1.00"
+          },
+          {
+            "round": 15,
+            "action": "Golden Goose",
+            "reward": 0.8097970104392497,
+            "summary": "Played Golden Goose \u2192 $0.81"
+          },
+          {
+            "round": 16,
+            "action": "Golden Goose",
+            "reward": 0.6867550342269555,
+            "summary": "Played Golden Goose \u2192 $0.69"
+          },
+          {
+            "round": 17,
+            "action": "Golden Goose",
+            "reward": 0.794996381021958,
+            "summary": "Played Golden Goose \u2192 $0.79"
+          },
+          {
+            "round": 18,
+            "action": "Golden Goose",
+            "reward": 0.9127405567843926,
+            "summary": "Played Golden Goose \u2192 $0.91"
+          },
+          {
+            "round": 19,
+            "action": "Golden Goose",
+            "reward": 0.917880258036455,
+            "summary": "Played Golden Goose \u2192 $0.92"
+          },
+          {
+            "round": 20,
+            "action": "Golden Goose",
+            "reward": 1.0,
+            "summary": "Played Golden Goose \u2192 $1.00"
+          }
+        ]
+      },
+      {
+        "horizon": 20,
+        "repetition": 3,
+        "seed": 3062,
+        "metrics": {
+          "total_reward": 15.907170259191673,
+          "total_regret": 2.669941533890056,
+          "cumulative_regret_curve": [
+            0.2609292448435161,
+            1.1897848344976025,
+            1.1852744729392393,
+            1.114130062593326,
+            1.0429856522474124,
+            1.1066560488173085,
+            1.178937927167131,
+            1.2468859904365164,
+            1.5419787285815232,
+            1.6502650969188182,
+            1.5791206865729048,
+            1.6995266880551136,
+            1.9142657282711868,
+            1.8431213179252732,
+            2.144836185140065,
+            2.1245237770071266,
+            2.091548513065322,
+            2.0204041027194086,
+            2.2728589378727477,
+            2.669941533890056
+          ],
+          "exploration_ratio_curve": [
+            1.0,
+            0.5,
+            0.6666666666666666,
+            0.75,
+            0.6,
+            0.5,
+            0.8571428571428571,
+            0.875,
+            0.8888888888888888,
+            0.9,
+            0.9,
+            0.9,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "adaptation_events": [],
+          "unique_actions_tried": 4,
+          "total_steps": 20,
+          "mean_reward": 0.7953585129595837,
+          "final_exploration_ratio": 0.9800000000000001,
+          "adaptation_speed": null
+        },
+        "history": [
+          {
+            "round": 1,
+            "action": "Rusty Red",
+            "reward": 0.6679263448105704,
+            "summary": "Played Rusty Red \u2192 $0.67"
+          },
+          {
+            "round": 2,
+            "action": "Lucky Lemon",
+            "reward": 0.0,
+            "summary": "Played Lucky Lemon \u2192 $0.00"
+          },
+          {
+            "round": 3,
+            "action": "Midnight Blue",
+            "reward": 0.9333659512124498,
+            "summary": "Played Midnight Blue \u2192 $0.93"
+          },
+          {
+            "round": 4,
+            "action": "Golden Goose",
+            "reward": 1.0,
+            "summary": "Played Golden Goose \u2192 $1.00"
+          },
+          {
+            "round": 5,
+            "action": "Golden Goose",
+            "reward": 1.0,
+            "summary": "Played Golden Goose \u2192 $1.00"
+          },
+          {
+            "round": 6,
+            "action": "Golden Goose",
+            "reward": 0.8651851930841903,
+            "summary": "Played Golden Goose \u2192 $0.87"
+          },
+          {
+            "round": 7,
+            "action": "Golden Goose",
+            "reward": 0.856573711304264,
+            "summary": "Played Golden Goose \u2192 $0.86"
+          },
+          {
+            "round": 8,
+            "action": "Golden Goose",
+            "reward": 0.8609075263847011,
+            "summary": "Played Golden Goose \u2192 $0.86"
+          },
+          {
+            "round": 9,
+            "action": "Golden Goose",
+            "reward": 0.6337628515090797,
+            "summary": "Played Golden Goose \u2192 $0.63"
+          },
+          {
+            "round": 10,
+            "action": "Golden Goose",
+            "reward": 0.8205692213167916,
+            "summary": "Played Golden Goose \u2192 $0.82"
+          },
+          {
+            "round": 11,
+            "action": "Golden Goose",
+            "reward": 1.0,
+            "summary": "Played Golden Goose \u2192 $1.00"
+          },
+          {
+            "round": 12,
+            "action": "Golden Goose",
+            "reward": 0.8084495881718777,
+            "summary": "Played Golden Goose \u2192 $0.81"
+          },
+          {
+            "round": 13,
+            "action": "Golden Goose",
+            "reward": 0.7141165494380133,
+            "summary": "Played Golden Goose \u2192 $0.71"
+          },
+          {
+            "round": 14,
+            "action": "Golden Goose",
+            "reward": 1.0,
+            "summary": "Played Golden Goose \u2192 $1.00"
+          },
+          {
+            "round": 15,
+            "action": "Golden Goose",
+            "reward": 0.6271407224392952,
+            "summary": "Played Golden Goose \u2192 $0.63"
+          },
+          {
+            "round": 16,
+            "action": "Golden Goose",
+            "reward": 0.9491679977870247,
+            "summary": "Played Golden Goose \u2192 $0.95"
+          },
+          {
+            "round": 17,
+            "action": "Golden Goose",
+            "reward": 0.9618308535958907,
+            "summary": "Played Golden Goose \u2192 $0.96"
+          },
+          {
+            "round": 18,
+            "action": "Golden Goose",
+            "reward": 1.0,
+            "summary": "Played Golden Goose \u2192 $1.00"
+          },
+          {
+            "round": 19,
+            "action": "Golden Goose",
+            "reward": 0.6764007545007472,
+            "summary": "Played Golden Goose \u2192 $0.68"
+          },
+          {
+            "round": 20,
+            "action": "Golden Goose",
+            "reward": 0.5317729936367784,
+            "summary": "Played Golden Goose \u2192 $0.53"
+          }
+        ]
+      },
+      {
+        "horizon": 20,
+        "repetition": 4,
+        "seed": 4062,
+        "metrics": {
+          "total_reward": 15.144476441138698,
+          "total_regret": 3.840376207220355,
+          "cumulative_regret_curve": [
+            0.4395822056053985,
+            0.6407864306360953,
+            1.1861722372846009,
+            1.8911516367085568,
+            2.1110330082167312,
+            2.3111786094260016,
+            2.52408301815885,
+            2.4733256505768026,
+            2.4225682829947552,
+            2.592334055044992,
+            2.715582127237845,
+            2.9749685724909565,
+            3.0487348235092355,
+            3.1456359331096864,
+            3.1798195082476477,
+            3.6675331206568265,
+            3.6494522907985396,
+            3.598694923216492,
+            3.7002098726043235,
+            3.840376207220355
+          ],
+          "exploration_ratio_curve": [
+            1.0,
+            0.5,
+            0.6666666666666666,
+            0.75,
+            0.8,
+            0.8333333333333334,
+            0.8571428571428571,
+            0.625,
+            0.5555555555555556,
+            0.5,
+            0.4,
+            0.4,
+            0.3,
+            0.2,
+            0.1,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "adaptation_events": [],
+          "unique_actions_tried": 6,
+          "total_steps": 20,
+          "mean_reward": 0.757223822056935,
+          "final_exploration_ratio": 0.14,
+          "adaptation_speed": null
+        },
+        "history": [
+          {
+            "round": 1,
+            "action": "Rusty Red",
+            "reward": 0.5096604268125542,
+            "summary": "Played Rusty Red \u2192 $0.51"
+          },
+          {
+            "round": 2,
+            "action": "Lucky Lemon",
+            "reward": 0.7480384073872559,
+            "summary": "Played Lucky Lemon \u2192 $0.75"
+          },
+          {
+            "round": 3,
+            "action": "Golden Goose",
+            "reward": 0.40385682576944726,
+            "summary": "Played Golden Goose \u2192 $0.40"
+          },
+          {
+            "round": 4,
+            "action": "Midnight Blue",
+            "reward": 0.24426323299399666,
+            "summary": "Played Midnight Blue \u2192 $0.24"
+          },
+          {
+            "round": 5,
+            "action": "Purple Haze",
+            "reward": 0.7293612609097784,
+            "summary": "Played Purple Haze \u2192 $0.73"
+          },
+          {
+            "round": 6,
+            "action": "Silver Streak",
+            "reward": 0.7490970312086822,
+            "summary": "Played Silver Streak \u2192 $0.75"
+          },
+          {
+            "round": 7,
+            "action": "Lucky Lemon",
+            "reward": 0.7363382236851042,
+            "summary": "Played Lucky Lemon \u2192 $0.74"
+          },
+          {
+            "round": 8,
+            "action": "Lucky Lemon",
+            "reward": 1.0,
+            "summary": "Played Lucky Lemon \u2192 $1.00"
+          },
+          {
+            "round": 9,
+            "action": "Lucky Lemon",
+            "reward": 1.0,
+            "summary": "Played Lucky Lemon \u2192 $1.00"
+          },
+          {
+            "round": 10,
+            "action": "Lucky Lemon",
+            "reward": 0.7794768603677164,
+            "summary": "Played Lucky Lemon \u2192 $0.78"
+          },
+          {
+            "round": 11,
+            "action": "Lucky Lemon",
+            "reward": 0.8259945602250994,
+            "summary": "Played Lucky Lemon \u2192 $0.83"
+          },
+          {
+            "round": 12,
+            "action": "Lucky Lemon",
+            "reward": 0.6898561871648411,
+            "summary": "Played Lucky Lemon \u2192 $0.69"
+          },
+          {
+            "round": 13,
+            "action": "Lucky Lemon",
+            "reward": 0.8754763813996738,
+            "summary": "Played Lucky Lemon \u2192 $0.88"
+          },
+          {
+            "round": 14,
+            "action": "Lucky Lemon",
+            "reward": 0.8523415228175019,
+            "summary": "Played Lucky Lemon \u2192 $0.85"
+          },
+          {
+            "round": 15,
+            "action": "Lucky Lemon",
+            "reward": 0.9150590572799912,
+            "summary": "Played Lucky Lemon \u2192 $0.92"
+          },
+          {
+            "round": 16,
+            "action": "Lucky Lemon",
+            "reward": 0.46152902000877405,
+            "summary": "Played Lucky Lemon \u2192 $0.46"
+          },
+          {
+            "round": 17,
+            "action": "Lucky Lemon",
+            "reward": 0.9673234622762394,
+            "summary": "Played Lucky Lemon \u2192 $0.97"
+          },
+          {
+            "round": 18,
+            "action": "Lucky Lemon",
+            "reward": 1.0,
+            "summary": "Played Lucky Lemon \u2192 $1.00"
+          },
+          {
+            "round": 19,
+            "action": "Lucky Lemon",
+            "reward": 0.8477276830301212,
+            "summary": "Played Lucky Lemon \u2192 $0.85"
+          },
+          {
+            "round": 20,
+            "action": "Lucky Lemon",
+            "reward": 0.8090762978019211,
+            "summary": "Played Lucky Lemon \u2192 $0.81"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "model": "arcee-ai/trinity-large-preview:free",
+    "environment": "casino_slot_machines",
+    "temperature": 0.7,
+    "episodes": [
+      {
+        "horizon": 20,
+        "repetition": 0,
+        "seed": 62,
+        "metrics": {
+          "total_reward": 13.532367339807802,
+          "total_regret": 5.215532435550622,
+          "cumulative_regret_curve": [
+            0.5535633118579933,
+            0.8624542275861586,
+            1.106749357244854,
+            2.044144346012775,
+            2.4489517494845847,
+            2.702305264093371,
+            2.843889863077327,
+            3.1172785724226078,
+            3.257491634690739,
+            3.5900541149205236,
+            3.7569308316216743,
+            3.8619135024437052,
+            4.305585608588583,
+            4.432007280495435,
+            4.503909946042554,
+            4.639801903357865,
+            4.9708459687661435,
+            5.0132559051104035,
+            5.19260705179959,
+            5.215532435550622
+          ],
+          "exploration_ratio_curve": [
+            1.0,
+            0.5,
+            0.6666666666666666,
+            0.75,
+            0.8,
+            0.8333333333333334,
+            0.7142857142857143,
+            0.625,
+            0.5555555555555556,
+            0.5,
+            0.4,
+            0.3,
+            0.3,
+            0.2,
+            0.1,
+            0.0,
+            0.0,
+            0.9,
+            0.9,
+            0.9
+          ],
+          "adaptation_events": [],
+          "unique_actions_tried": 6,
+          "total_steps": 20,
+          "mean_reward": 0.67661836699039,
+          "final_exploration_ratio": 0.4,
+          "adaptation_speed": null
+        },
+        "history": [
+          {
+            "round": 1,
+            "action": "Rusty Red",
+            "reward": 0.3838316769099278,
+            "summary": "Played Rusty Red \u2192 $0.38"
+          },
+          {
+            "round": 2,
+            "action": "Lucky Lemon",
+            "reward": 0.6285040730397559,
+            "summary": "Played Lucky Lemon \u2192 $0.63"
+          },
+          {
+            "round": 3,
+            "action": "Midnight Blue",
+            "reward": 0.6930998591092259,
+            "summary": "Played Midnight Blue \u2192 $0.69"
+          },
+          {
+            "round": 4,
+            "action": "Purple Haze",
+            "reward": 0.0,
+            "summary": "Played Purple Haze \u2192 $0.00"
+          },
+          {
+            "round": 5,
+            "action": "Golden Goose",
+            "reward": 0.5325875852961115,
+            "summary": "Played Golden Goose \u2192 $0.53"
+          },
+          {
+            "round": 6,
+            "action": "Silver Streak",
+            "reward": 0.6840414741591345,
+            "summary": "Played Silver Streak \u2192 $0.68"
+          },
+          {
+            "round": 7,
+            "action": "Midnight Blue",
+            "reward": 0.7958103897839652,
+            "summary": "Played Midnight Blue \u2192 $0.80"
+          },
+          {
+            "round": 8,
+            "action": "Midnight Blue",
+            "reward": 0.6640062794226405,
+            "summary": "Played Midnight Blue \u2192 $0.66"
+          },
+          {
+            "round": 9,
+            "action": "Midnight Blue",
+            "reward": 0.7971819264997898,
+            "summary": "Played Midnight Blue \u2192 $0.80"
+          },
+          {
+            "round": 10,
+            "action": "Midnight Blue",
+            "reward": 0.6048325085381366,
+            "summary": "Played Midnight Blue \u2192 $0.60"
+          },
+          {
+            "round": 11,
+            "action": "Midnight Blue",
+            "reward": 0.7705182720667706,
+            "summary": "Played Midnight Blue \u2192 $0.77"
+          },
+          {
+            "round": 12,
+            "action": "Midnight Blue",
+            "reward": 0.8324123179458902,
+            "summary": "Played Midnight Blue \u2192 $0.83"
+          },
+          {
+            "round": 13,
+            "action": "Midnight Blue",
+            "reward": 0.493722882623044,
+            "summary": "Played Midnight Blue \u2192 $0.49"
+          },
+          {
+            "round": 14,
+            "action": "Midnight Blue",
+            "reward": 0.8109733168610684,
+            "summary": "Played Midnight Blue \u2192 $0.81"
+          },
+          {
+            "round": 15,
+            "action": "Midnight Blue",
+            "reward": 0.8654923232208029,
+            "summary": "Played Midnight Blue \u2192 $0.87"
+          },
+          {
+            "round": 16,
+            "action": "Midnight Blue",
+            "reward": 0.80150303145261,
+            "summary": "Played Midnight Blue \u2192 $0.80"
+          },
+          {
+            "round": 17,
+            "action": "Midnight Blue",
+            "reward": 0.6063509233596429,
+            "summary": "Played Midnight Blue \u2192 $0.61"
+          },
+          {
+            "round": 18,
+            "action": "Lucky Lemon",
+            "reward": 0.8949850524236608,
+            "summary": "Played Lucky Lemon \u2192 $0.89"
+          },
+          {
+            "round": 19,
+            "action": "Midnight Blue",
+            "reward": 0.7580438420787349,
+            "summary": "Played Midnight Blue \u2192 $0.76"
+          },
+          {
+            "round": 20,
+            "action": "Midnight Blue",
+            "reward": 0.9144696050168892,
+            "summary": "Played Midnight Blue \u2192 $0.91"
+          }
+        ]
+      },
+      {
+        "horizon": 20,
+        "repetition": 1,
+        "seed": 1062,
+        "metrics": {
+          "total_reward": 14.595442993289495,
+          "total_regret": 2.6020573975178007,
+          "cumulative_regret_curve": [
+            0.19862298749208473,
+            0.8874313930654211,
+            1.31616353255287,
+            1.6548454999008637,
+            1.572647096189725,
+            1.6985176940818696,
+            1.7740261211188852,
+            1.7290515011187395,
+            1.7083682112193461,
+            1.7539936235736793,
+            1.8105003611151123,
+            1.8627601771467872,
+            2.2168548598409545,
+            2.076729879381319,
+            2.1774253547036113,
+            2.0373003742439764,
+            2.165069943390756,
+            2.1249869106648522,
+            2.3461238971787184,
+            2.6020573975178007
+          ],
+          "exploration_ratio_curve": [
+            1.0,
+            0.5,
+            0.6666666666666666,
+            0.75,
+            0.8,
+            0.8333333333333334,
+            0.7142857142857143,
+            0.625,
+            0.5555555555555556,
+            0.5,
+            0.4,
+            0.3,
+            0.2,
+            0.1,
+            0.1,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "adaptation_events": [],
+          "unique_actions_tried": 6,
+          "total_steps": 20,
+          "mean_reward": 0.7297721496644748,
+          "final_exploration_ratio": 0.11000000000000001,
+          "adaptation_speed": null
+        },
+        "history": [
+          {
+            "round": 1,
+            "action": "Rusty Red",
+            "reward": 0.6612520320482801,
+            "summary": "Played Rusty Red \u2192 $0.66"
+          },
+          {
+            "round": 2,
+            "action": "Lucky Lemon",
+            "reward": 0.1710666139670285,
+            "summary": "Played Lucky Lemon \u2192 $0.17"
+          },
+          {
+            "round": 3,
+            "action": "Midnight Blue",
+            "reward": 0.43114288005291596,
+            "summary": "Played Midnight Blue \u2192 $0.43"
+          },
+          {
+            "round": 4,
+            "action": "Golden Goose",
+            "reward": 0.521193052192371,
+            "summary": "Played Golden Goose \u2192 $0.52"
+          },
+          {
+            "round": 5,
+            "action": "Purple Haze",
+            "reward": 0.9420734232515037,
+            "summary": "Played Purple Haze \u2192 $0.94"
+          },
+          {
+            "round": 6,
+            "action": "Silver Streak",
+            "reward": 0.7340044216482202,
+            "summary": "Played Silver Streak \u2192 $0.73"
+          },
+          {
+            "round": 7,
+            "action": "Purple Haze",
+            "reward": 0.7843665925033491,
+            "summary": "Played Purple Haze \u2192 $0.78"
+          },
+          {
+            "round": 8,
+            "action": "Purple Haze",
+            "reward": 0.9048496395405106,
+            "summary": "Played Purple Haze \u2192 $0.90"
+          },
+          {
+            "round": 9,
+            "action": "Purple Haze",
+            "reward": 0.8805583094397581,
+            "summary": "Played Purple Haze \u2192 $0.88"
+          },
+          {
+            "round": 10,
+            "action": "Purple Haze",
+            "reward": 0.8142496071860316,
+            "summary": "Played Purple Haze \u2192 $0.81"
+          },
+          {
+            "round": 11,
+            "action": "Purple Haze",
+            "reward": 0.8033682819989318,
+            "summary": "Played Purple Haze \u2192 $0.80"
+          },
+          {
+            "round": 12,
+            "action": "Purple Haze",
+            "reward": 0.8076152035086898,
+            "summary": "Played Purple Haze \u2192 $0.81"
+          },
+          {
+            "round": 13,
+            "action": "Purple Haze",
+            "reward": 0.5057803368461975,
+            "summary": "Played Purple Haze \u2192 $0.51"
+          },
+          {
+            "round": 14,
+            "action": "Purple Haze",
+            "reward": 1.0,
+            "summary": "Played Purple Haze \u2192 $1.00"
+          },
+          {
+            "round": 15,
+            "action": "Purple Haze",
+            "reward": 0.7591795442180728,
+            "summary": "Played Purple Haze \u2192 $0.76"
+          },
+          {
+            "round": 16,
+            "action": "Purple Haze",
+            "reward": 1.0,
+            "summary": "Played Purple Haze \u2192 $1.00"
+          },
+          {
+            "round": 17,
+            "action": "Purple Haze",
+            "reward": 0.7321054503935852,
+            "summary": "Played Purple Haze \u2192 $0.73"
+          },
+          {
+            "round": 18,
+            "action": "Purple Haze",
+            "reward": 0.8999580522662686,
+            "summary": "Played Purple Haze \u2192 $0.90"
+          },
+          {
+            "round": 19,
+            "action": "Purple Haze",
+            "reward": 0.6387380330264989,
+            "summary": "Played Purple Haze \u2192 $0.64"
+          },
+          {
+            "round": 20,
+            "action": "Purple Haze",
+            "reward": 0.6039415192012825,
+            "summary": "Played Purple Haze \u2192 $0.60"
+          }
+        ]
+      },
+      {
+        "horizon": 20,
+        "repetition": 2,
+        "seed": 2062,
+        "metrics": {
+          "total_reward": 16.66861293514215,
+          "total_regret": 0.8656708690467437,
+          "cumulative_regret_curve": [
+            -0.09611402670377978,
+            0.5179098382477415,
+            0.8940529115259112,
+            0.986296345365988,
+            0.892374219181279,
+            0.8977101939261706,
+            0.8403435204269566,
+            0.7480036214918396,
+            0.8253835083222236,
+            0.7020976985316683,
+            0.9230628480719414,
+            0.9741265878801972,
+            0.8508407780896419,
+            0.7275549682990865,
+            0.7944721480692815,
+            0.9844313040517706,
+            1.0661491132392573,
+            1.0301227466643095,
+            0.9889566788372991,
+            0.8656708690467437
+          ],
+          "exploration_ratio_curve": [
+            1.0,
+            0.5,
+            0.6666666666666666,
+            0.75,
+            0.8,
+            0.8333333333333334,
+            0.8571428571428571,
+            0.875,
+            0.8888888888888888,
+            0.9,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "adaptation_events": [],
+          "unique_actions_tried": 4,
+          "total_steps": 20,
+          "mean_reward": 0.8334306467571075,
+          "final_exploration_ratio": 1.0,
+          "adaptation_speed": null
+        },
+        "history": [
+          {
+            "round": 1,
+            "action": "Rusty Red",
+            "reward": 0.9728282169132244,
+            "summary": "Played Rusty Red \u2192 $0.97"
+          },
+          {
+            "round": 2,
+            "action": "Lucky Lemon",
+            "reward": 0.26269032525792335,
+            "summary": "Played Lucky Lemon \u2192 $0.26"
+          },
+          {
+            "round": 3,
+            "action": "Midnight Blue",
+            "reward": 0.500571116931275,
+            "summary": "Played Midnight Blue \u2192 $0.50"
+          },
+          {
+            "round": 4,
+            "action": "Golden Goose",
+            "reward": 0.7844707563693678,
+            "summary": "Played Golden Goose \u2192 $0.78"
+          },
+          {
+            "round": 5,
+            "action": "Golden Goose",
+            "reward": 0.9706363163941536,
+            "summary": "Played Golden Goose \u2192 $0.97"
+          },
+          {
+            "round": 6,
+            "action": "Golden Goose",
+            "reward": 0.8713782154645531,
+            "summary": "Played Golden Goose \u2192 $0.87"
+          },
+          {
+            "round": 7,
+            "action": "Golden Goose",
+            "reward": 0.9340808637086586,
+            "summary": "Played Golden Goose \u2192 $0.93"
+          },
+          {
+            "round": 8,
+            "action": "Golden Goose",
+            "reward": 0.9690540891445616,
+            "summary": "Played Golden Goose \u2192 $0.97"
+          },
+          {
+            "round": 9,
+            "action": "Golden Goose",
+            "reward": 0.7993343033790606,
+            "summary": "Played Golden Goose \u2192 $0.80"
+          },
+          {
+            "round": 10,
+            "action": "Golden Goose",
+            "reward": 1.0,
+            "summary": "Played Golden Goose \u2192 $1.00"
+          },
+          {
+            "round": 11,
+            "action": "Golden Goose",
+            "reward": 0.6557490406691715,
+            "summary": "Played Golden Goose \u2192 $0.66"
+          },
+          {
+            "round": 12,
+            "action": "Golden Goose",
+            "reward": 0.8256504504011888,
+            "summary": "Played Golden Goose \u2192 $0.83"
+          },
+          {
+            "round": 13,
+            "action": "Golden Goose",
+            "reward": 1.0,
+            "summary": "Played Golden Goose \u2192 $1.00"
+          },
+          {
+            "round": 14,
+            "action": "Golden Goose",
+            "reward": 1.0,
+            "summary": "Played Golden Goose \u2192 $1.00"
+          },
+          {
+            "round": 15,
+            "action": "Golden Goose",
+            "reward": 0.8097970104392497,
+            "summary": "Played Golden Goose \u2192 $0.81"
+          },
+          {
+            "round": 16,
+            "action": "Golden Goose",
+            "reward": 0.6867550342269555,
+            "summary": "Played Golden Goose \u2192 $0.69"
+          },
+          {
+            "round": 17,
+            "action": "Golden Goose",
+            "reward": 0.794996381021958,
+            "summary": "Played Golden Goose \u2192 $0.79"
+          },
+          {
+            "round": 18,
+            "action": "Golden Goose",
+            "reward": 0.9127405567843926,
+            "summary": "Played Golden Goose \u2192 $0.91"
+          },
+          {
+            "round": 19,
+            "action": "Golden Goose",
+            "reward": 0.917880258036455,
+            "summary": "Played Golden Goose \u2192 $0.92"
+          },
+          {
+            "round": 20,
+            "action": "Golden Goose",
+            "reward": 1.0,
+            "summary": "Played Golden Goose \u2192 $1.00"
+          }
+        ]
+      },
+      {
+        "horizon": 20,
+        "repetition": 3,
+        "seed": 3062,
+        "metrics": {
+          "total_reward": 15.28824344502784,
+          "total_regret": 3.288868348053889,
+          "cumulative_regret_curve": [
+            0.2609292448435161,
+            1.1897848344976025,
+            1.1852744729392393,
+            1.114130062593326,
+            1.6619124664112461,
+            1.7255828629811423,
+            1.7978647413309647,
+            1.8658128046003501,
+            2.1609055427453567,
+            2.2691919110826517,
+            2.198047500736738,
+            2.318453502218947,
+            2.5331925424350206,
+            2.462048132089107,
+            2.763762999303898,
+            2.74345059117096,
+            2.7104753272291555,
+            2.639330916883242,
+            2.891785752036581,
+            3.288868348053889
+          ],
+          "exploration_ratio_curve": [
+            1.0,
+            0.5,
+            0.6666666666666666,
+            0.75,
+            0.8,
+            0.8333333333333334,
+            0.8571428571428571,
+            0.875,
+            0.8888888888888888,
+            0.9,
+            0.9,
+            0.9,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "adaptation_events": [],
+          "unique_actions_tried": 5,
+          "total_steps": 20,
+          "mean_reward": 0.764412172251392,
+          "final_exploration_ratio": 0.9800000000000001,
+          "adaptation_speed": null
+        },
+        "history": [
+          {
+            "round": 1,
+            "action": "Rusty Red",
+            "reward": 0.6679263448105704,
+            "summary": "Played Rusty Red \u2192 $0.67"
+          },
+          {
+            "round": 2,
+            "action": "Lucky Lemon",
+            "reward": 0.0,
+            "summary": "Played Lucky Lemon \u2192 $0.00"
+          },
+          {
+            "round": 3,
+            "action": "Midnight Blue",
+            "reward": 0.9333659512124498,
+            "summary": "Played Midnight Blue \u2192 $0.93"
+          },
+          {
+            "round": 4,
+            "action": "Golden Goose",
+            "reward": 1.0,
+            "summary": "Played Golden Goose \u2192 $1.00"
+          },
+          {
+            "round": 5,
+            "action": "Purple Haze",
+            "reward": 0.38107318583616645,
+            "summary": "Played Purple Haze \u2192 $0.38"
+          },
+          {
+            "round": 6,
+            "action": "Golden Goose",
+            "reward": 0.8651851930841903,
+            "summary": "Played Golden Goose \u2192 $0.87"
+          },
+          {
+            "round": 7,
+            "action": "Golden Goose",
+            "reward": 0.856573711304264,
+            "summary": "Played Golden Goose \u2192 $0.86"
+          },
+          {
+            "round": 8,
+            "action": "Golden Goose",
+            "reward": 0.8609075263847011,
+            "summary": "Played Golden Goose \u2192 $0.86"
+          },
+          {
+            "round": 9,
+            "action": "Golden Goose",
+            "reward": 0.6337628515090797,
+            "summary": "Played Golden Goose \u2192 $0.63"
+          },
+          {
+            "round": 10,
+            "action": "Golden Goose",
+            "reward": 0.8205692213167916,
+            "summary": "Played Golden Goose \u2192 $0.82"
+          },
+          {
+            "round": 11,
+            "action": "Golden Goose",
+            "reward": 1.0,
+            "summary": "Played Golden Goose \u2192 $1.00"
+          },
+          {
+            "round": 12,
+            "action": "Golden Goose",
+            "reward": 0.8084495881718777,
+            "summary": "Played Golden Goose \u2192 $0.81"
+          },
+          {
+            "round": 13,
+            "action": "Golden Goose",
+            "reward": 0.7141165494380133,
+            "summary": "Played Golden Goose \u2192 $0.71"
+          },
+          {
+            "round": 14,
+            "action": "Golden Goose",
+            "reward": 1.0,
+            "summary": "Played Golden Goose \u2192 $1.00"
+          },
+          {
+            "round": 15,
+            "action": "Golden Goose",
+            "reward": 0.6271407224392952,
+            "summary": "Played Golden Goose \u2192 $0.63"
+          },
+          {
+            "round": 16,
+            "action": "Golden Goose",
+            "reward": 0.9491679977870247,
+            "summary": "Played Golden Goose \u2192 $0.95"
+          },
+          {
+            "round": 17,
+            "action": "Golden Goose",
+            "reward": 0.9618308535958907,
+            "summary": "Played Golden Goose \u2192 $0.96"
+          },
+          {
+            "round": 18,
+            "action": "Golden Goose",
+            "reward": 1.0,
+            "summary": "Played Golden Goose \u2192 $1.00"
+          },
+          {
+            "round": 19,
+            "action": "Golden Goose",
+            "reward": 0.6764007545007472,
+            "summary": "Played Golden Goose \u2192 $0.68"
+          },
+          {
+            "round": 20,
+            "action": "Golden Goose",
+            "reward": 0.5317729936367784,
+            "summary": "Played Golden Goose \u2192 $0.53"
+          }
+        ]
+      },
+      {
+        "horizon": 20,
+        "repetition": 4,
+        "seed": 4062,
+        "metrics": {
+          "total_reward": 16.27647289053762,
+          "total_regret": 2.708379757821436,
+          "cumulative_regret_curve": [
+            0.4395822056053985,
+            0.6407864306360953,
+            0.8167896448952198,
+            0.9524924294611653,
+            0.901735061879118,
+            1.1791821600270826,
+            1.392086568759931,
+            1.3413292011778837,
+            1.2905718335958363,
+            1.4603376056460726,
+            1.583585677838926,
+            1.8429721230920375,
+            1.9167383741103166,
+            2.0136394837107674,
+            2.0478230588487287,
+            2.5355366712579075,
+            2.5174558413996206,
+            2.4666984738175732,
+            2.5682134232054046,
+            2.708379757821436
+          ],
+          "exploration_ratio_curve": [
+            1.0,
+            0.5,
+            0.6666666666666666,
+            0.5,
+            0.4,
+            0.3333333333333333,
+            0.2857142857142857,
+            0.25,
+            0.2222222222222222,
+            0.2,
+            0.1,
+            0.1,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "adaptation_events": [],
+          "unique_actions_tried": 3,
+          "total_steps": 20,
+          "mean_reward": 0.8138236445268809,
+          "final_exploration_ratio": 0.02,
+          "adaptation_speed": null
+        },
+        "history": [
+          {
+            "round": 1,
+            "action": "Rusty Red",
+            "reward": 0.5096604268125542,
+            "summary": "Played Rusty Red \u2192 $0.51"
+          },
+          {
+            "round": 2,
+            "action": "Lucky Lemon",
+            "reward": 0.7480384073872559,
+            "summary": "Played Lucky Lemon \u2192 $0.75"
+          },
+          {
+            "round": 3,
+            "action": "Midnight Blue",
+            "reward": 0.7732394181588282,
+            "summary": "Played Midnight Blue \u2192 $0.77"
+          },
+          {
+            "round": 4,
+            "action": "Lucky Lemon",
+            "reward": 0.8135398478520072,
+            "summary": "Played Lucky Lemon \u2192 $0.81"
+          },
+          {
+            "round": 5,
+            "action": "Lucky Lemon",
+            "reward": 1.0,
+            "summary": "Played Lucky Lemon \u2192 $1.00"
+          },
+          {
+            "round": 6,
+            "action": "Lucky Lemon",
+            "reward": 0.671795534269988,
+            "summary": "Played Lucky Lemon \u2192 $0.67"
+          },
+          {
+            "round": 7,
+            "action": "Lucky Lemon",
+            "reward": 0.7363382236851042,
+            "summary": "Played Lucky Lemon \u2192 $0.74"
+          },
+          {
+            "round": 8,
+            "action": "Lucky Lemon",
+            "reward": 1.0,
+            "summary": "Played Lucky Lemon \u2192 $1.00"
+          },
+          {
+            "round": 9,
+            "action": "Lucky Lemon",
+            "reward": 1.0,
+            "summary": "Played Lucky Lemon \u2192 $1.00"
+          },
+          {
+            "round": 10,
+            "action": "Lucky Lemon",
+            "reward": 0.7794768603677164,
+            "summary": "Played Lucky Lemon \u2192 $0.78"
+          },
+          {
+            "round": 11,
+            "action": "Lucky Lemon",
+            "reward": 0.8259945602250994,
+            "summary": "Played Lucky Lemon \u2192 $0.83"
+          },
+          {
+            "round": 12,
+            "action": "Lucky Lemon",
+            "reward": 0.6898561871648411,
+            "summary": "Played Lucky Lemon \u2192 $0.69"
+          },
+          {
+            "round": 13,
+            "action": "Lucky Lemon",
+            "reward": 0.8754763813996738,
+            "summary": "Played Lucky Lemon \u2192 $0.88"
+          },
+          {
+            "round": 14,
+            "action": "Lucky Lemon",
+            "reward": 0.8523415228175019,
+            "summary": "Played Lucky Lemon \u2192 $0.85"
+          },
+          {
+            "round": 15,
+            "action": "Lucky Lemon",
+            "reward": 0.9150590572799912,
+            "summary": "Played Lucky Lemon \u2192 $0.92"
+          },
+          {
+            "round": 16,
+            "action": "Lucky Lemon",
+            "reward": 0.46152902000877405,
+            "summary": "Played Lucky Lemon \u2192 $0.46"
+          },
+          {
+            "round": 17,
+            "action": "Lucky Lemon",
+            "reward": 0.9673234622762394,
+            "summary": "Played Lucky Lemon \u2192 $0.97"
+          },
+          {
+            "round": 18,
+            "action": "Lucky Lemon",
+            "reward": 1.0,
+            "summary": "Played Lucky Lemon \u2192 $1.00"
+          },
+          {
+            "round": 19,
+            "action": "Lucky Lemon",
+            "reward": 0.8477276830301212,
+            "summary": "Played Lucky Lemon \u2192 $0.85"
+          },
+          {
+            "round": 20,
+            "action": "Lucky Lemon",
+            "reward": 0.8090762978019211,
+            "summary": "Played Lucky Lemon \u2192 $0.81"
+          }
+        ]
+      }
+    ]
+  }
+]
